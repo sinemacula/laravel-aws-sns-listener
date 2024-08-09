@@ -12,4 +12,5 @@ use InvalidArgumentException;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2024 Sine Macula Limited.
  */
-class UnsupportedMessageException extends InvalidArgumentException { }
+class UnsupportedMessageException extends InvalidArgumentException
+{ }
