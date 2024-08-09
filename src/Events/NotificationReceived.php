@@ -23,4 +23,14 @@ class NotificationReceived
         protected NotificationInterface $notification
 
     ) {}
+
+    /**
+     * Return the notification.
+     *
+     * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface
+     */
+    public function getNotification(): NotificationInterface
+    {
+        return $this->notification;
+    }
 }
