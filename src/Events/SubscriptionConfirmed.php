@@ -23,4 +23,14 @@ class SubscriptionConfirmed
         protected SubscriptionConfirmationInterface $message
 
     ) {}
+
+    /**
+     * Return the message.
+     *
+     * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\SubscriptionConfirmationInterface
+     */
+    public function getMessage(): SubscriptionConfirmationInterface
+    {
+        return $this->message;
+    }
 }
