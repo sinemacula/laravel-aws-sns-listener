@@ -1,0 +1,54 @@
+{
+    "name": "sinemacula/laravel-aws-sns-listener",
+    "type": "library",
+    "description": "Laravel package to handle AWS SNS notifications with seamless integration and event-driven architecture",
+    "keywords": [
+        "sine macula",
+        "laravel",
+        "aws",
+        "sns",
+        "listener",
+        "events",
+        "webhooks"
+    ],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Ben Carey",
+            "email": "bdmc@sinemacula.co.uk"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "aws/aws-php-sns-message-validator": "^1.9",
+        "aws/aws-sdk-php": "^3.319",
+        "illuminate/http": "^11.0",
+        "illuminate/support": "^11.0",
+        "nesbot/carbon": "^3.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SineMacula\\Aws\\Sns\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SineMacula\\Aws\\Sns\\SnsServiceProvider"
+            ]
+        }
+    }
+}
