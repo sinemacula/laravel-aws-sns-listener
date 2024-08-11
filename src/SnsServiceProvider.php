@@ -33,7 +33,7 @@ class SnsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/aws.php', 'aws.sns'
+            __DIR__ . '/../config/aws.php', 'aws'
         );
 
         $this->registerTopicManager();
