@@ -8,6 +8,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface;
 use SineMacula\Aws\Sns\Entities\Messages\S3\Notification as S3Notification;
 use SineMacula\Aws\Sns\Entities\Messages\Ses\Notification as SesNotification;
 use SineMacula\Aws\Sns\Entities\Messages\SubscriptionConfirmation;
+use SineMacula\Aws\Sns\Entities\Messages\TestNotification;
 use SineMacula\Aws\Sns\Exceptions\UnsupportedMessageException;
 
 /**
@@ -33,6 +34,7 @@ class MessageFactory
             self::isS3Notification($message)           => new S3Notification($message),
             self::isSesNotification($message)          => new SesNotification($message),
             self::isCloudWatchNotification($message)   => new CloudWatchNotification($message),
+            self::isTestNotification($message)         => new TestNotification($message),
             default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . $message['Type'] ?? 'Undefined')
         };
     }
@@ -91,5 +93,18 @@ class MessageFactory
 
         return isset($message['AlarmName'])
             && isset($message['NewStateValue']);
+    }
+
+    /**
+     * Determine if the given message payload is a test notification.
+     *
+     * @param  \Aws\Sns\Message  $message
+     * @return bool
+     */
+    private static function isTestNotification(Message $message): bool
+    {
+        $message = json_decode($message['Message'], true);
+
+        return str_ends_with($message['Event'] ?? '', ':TestEvent');
     }
 }
