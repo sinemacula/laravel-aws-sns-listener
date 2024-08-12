@@ -28,14 +28,12 @@ class MessageFactory
      */
     public static function make(Message $message): MessageInterface
     {
-        $message['Message'] = json_decode($message['Message'], true);
-
         return match (true) {
             self::isSubscriptionConfirmation($message) => new SubscriptionConfirmation($message),
             self::isS3Notification($message)           => new S3Notification($message),
             self::isSesNotification($message)          => new SesNotification($message),
             self::isCloudWatchNotification($message)   => new CloudWatchNotification($message),
-            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type.'),
+            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . $message['Type'] ?? 'Undefined')
         };
     }
 
@@ -58,7 +56,9 @@ class MessageFactory
      */
     private static function isS3Notification(Message $message): bool
     {
-        return isset($message['Message']['Records'][0]['s3']);
+        $message = json_decode($message['Message'], true);
+
+        return isset($message['Records'][0]['s3']);
     }
 
     /**
@@ -69,8 +69,10 @@ class MessageFactory
      */
     private static function isSesNotification(Message $message): bool
     {
-        return isset($message['Message']['notificationType'])
-            && in_array($message['Message']['notificationType'], [
+        $message = json_decode($message['Message'], true);
+
+        return isset($message['notificationType'])
+            && in_array($message['notificationType'], [
                 'Bounce',
                 'Complaint',
                 'Delivery'
@@ -85,7 +87,9 @@ class MessageFactory
      */
     private static function isCloudWatchNotification(Message $message): bool
     {
-        return isset($message['Message']['AlarmName'])
-            && isset($message['Message']['NewStateValue']);
+        $message = json_decode($message['Message'], true);
+
+        return isset($message['AlarmName'])
+            && isset($message['NewStateValue']);
     }
 }
