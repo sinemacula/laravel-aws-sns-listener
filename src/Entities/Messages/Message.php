@@ -5,6 +5,7 @@ namespace SineMacula\Aws\Sns\Entities\Messages;
 use Aws\Sns\Message as BaseMessage;
 use Carbon\Carbon;
 use SineMacula\Aws\Sns\Entities\Entity;
+use stdClass;
 
 /**
  * The base AWS SNS message instance.
@@ -25,7 +26,10 @@ abstract class Message extends Entity
         protected BaseMessage $message
 
     ) {
-        parent::__construct($message->toArray());
+        parent::__construct([
+            ...$message->toArray(),
+            'Message' => json_decode($message['Message'], true)
+        ]);
     }
 
     /**
@@ -81,9 +85,9 @@ abstract class Message extends Entity
     /**
      * Return the message.
      *
-     * @return array|string|null
+     * @return \stdClass
      */
-    public function getMessage(): array|string|null
+    public function getMessage(): stdClass
     {
         return $this->attributes->Message;
     }
