@@ -4,6 +4,7 @@ namespace SineMacula\Aws\Sns\Entities\Messages\Contracts;
 
 use Aws\Sns\Message as BaseMessage;
 use Carbon\Carbon;
+use stdClass;
 
 /**
  * Message interface.
@@ -51,9 +52,9 @@ interface MessageInterface
     /**
      * Return the message.
      *
-     * @return array|string|null
+     * @return \stdClass
      */
-    public function getMessage(): array|string|null;
+    public function getMessage(): stdClass;
 
     /**
      * Return the signature version.
