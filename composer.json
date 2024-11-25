@@ -19,15 +19,15 @@
         }
     ],
     "require": {
-        "php": "^8.3",
-        "aws/aws-php-sns-message-validator": "^1.9",
-        "aws/aws-sdk-php": "^3.319",
-        "illuminate/http": "^11.0",
-        "illuminate/support": "^11.0",
-        "nesbot/carbon": "^3.7"
+        "php": "^8.1",
+        "aws/aws-php-sns-message-validator": "*",
+        "aws/aws-sdk-php": "*",
+        "illuminate/http": "*",
+        "illuminate/support": "*",
+        "nesbot/carbon": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.0"
+        "phpunit/phpunit": "*"
     },
     "autoload": {
         "psr-4": {
