@@ -5,6 +5,7 @@ namespace SineMacula\Aws\Sns;
 use Aws\Sns\Message;
 use SineMacula\Aws\Sns\Entities\Messages\CloudWatch\Notification as CloudWatchNotification;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface;
+use SineMacula\Aws\Sns\Entities\Messages\SNSNotification;
 use SineMacula\Aws\Sns\Entities\Messages\S3\Notification as S3Notification;
 use SineMacula\Aws\Sns\Entities\Messages\Ses\Notification as SesNotification;
 use SineMacula\Aws\Sns\Entities\Messages\SubscriptionConfirmation;
@@ -35,7 +36,8 @@ class MessageFactory
             self::isSesNotification($message)          => new SesNotification($message),
             self::isCloudWatchNotification($message)   => new CloudWatchNotification($message),
             self::isTestNotification($message)         => new TestNotification($message),
-            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . $message['Type'] ?? 'Undefined')
+            self::isGenericNotification($message)      => new SNSNotification($message),
+            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . ($message['Type'] ?? 'Undefined'))
         };
     }
 
@@ -58,7 +60,11 @@ class MessageFactory
      */
     private static function isS3Notification(Message $message): bool
     {
-        $message = json_decode($message['Message'], true);
+        $message = self::decodeMessagePayload($message);
+
+        if (!is_array($message)) {
+            return false;
+        }
 
         return isset($message['Records'][0]['s3']);
     }
@@ -71,7 +77,11 @@ class MessageFactory
      */
     private static function isSesNotification(Message $message): bool
     {
-        $message = json_decode($message['Message'], true);
+        $message = self::decodeMessagePayload($message);
+
+        if (!is_array($message)) {
+            return false;
+        }
 
         return isset($message['notificationType'])
             && in_array($message['notificationType'], [
@@ -89,7 +99,11 @@ class MessageFactory
      */
     private static function isCloudWatchNotification(Message $message): bool
     {
-        $message = json_decode($message['Message'], true);
+        $message = self::decodeMessagePayload($message);
+
+        if (!is_array($message)) {
+            return false;
+        }
 
         return isset($message['AlarmName'])
             && isset($message['NewStateValue']);
@@ -103,8 +117,34 @@ class MessageFactory
      */
     private static function isTestNotification(Message $message): bool
     {
-        $message = json_decode($message['Message'], true);
+        $message = self::decodeMessagePayload($message);
+
+        if (!is_array($message)) {
+            return false;
+        }
 
         return str_ends_with($message['Event'] ?? '', ':TestEvent');
+    }
+
+    /**
+     * Determine if the given message is a generic SNS notification.
+     *
+     * @param  \Aws\Sns\Message  $message
+     * @return bool
+     */
+    private static function isGenericNotification(Message $message): bool
+    {
+        return $message['Type'] === 'Notification';
+    }
+
+    /**
+     * Decode an SNS message payload.
+     *
+     * @param  \Aws\Sns\Message  $message
+     * @return mixed
+     */
+    private static function decodeMessagePayload(Message $message): mixed
+    {
+        return json_decode($message['Message'], true);
     }
 }

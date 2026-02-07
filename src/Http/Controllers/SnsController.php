@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Response;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\CloudWatchNotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
+use SineMacula\Aws\Sns\Entities\Messages\Contracts\SNSNotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\SesNotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\SubscriptionConfirmationInterface;
 use SineMacula\Aws\Sns\Events\CloudWatchNotificationReceived;
 use SineMacula\Aws\Sns\Events\NotificationReceived;
+use SineMacula\Aws\Sns\Events\SNSNotificationReceived;
 use SineMacula\Aws\Sns\Events\S3NotificationReceived;
 use SineMacula\Aws\Sns\Events\SesNotificationReceived;
 use SineMacula\Aws\Sns\Events\SubscriptionConfirmed;
@@ -107,6 +109,9 @@ class SnsController
                 break;
             case $notification instanceof SesNotificationInterface:
                 Event::dispatch(new SesNotificationReceived($notification));
+                break;
+            case $notification instanceof SNSNotificationInterface:
+                Event::dispatch(new SNSNotificationReceived($notification));
                 break;
         }
     }

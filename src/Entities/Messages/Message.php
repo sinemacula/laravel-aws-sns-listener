@@ -26,9 +26,15 @@ abstract class Message extends Entity
         protected BaseMessage $message
 
     ) {
+        $decodedMessage = json_decode($message['Message'], true);
+
+        if (!is_array($decodedMessage)) {
+            $decodedMessage = ['raw' => (string) $message['Message']];
+        }
+
         parent::__construct([
             ...$message->toArray(),
-            'Message' => json_decode($message['Message'], true)
+            'Message' => $decodedMessage
         ]);
     }
 
