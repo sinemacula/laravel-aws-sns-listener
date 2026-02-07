@@ -62,6 +62,10 @@ the data they provide.
   This event is triggered when SES (Simple Email Service) sends a notification, such as a bounce or complaint. It
   extends `NotificationReceived`.
 
+- **`SNSNotificationReceived`**  
+  This event is triggered when a generic SNS notification is received and does not match one of the specialised
+  notification payload formats.
+
 - **`SubscriptionConfirmed`**  
   This event is triggered when a subscription to an SNS topic is confirmed.
 
@@ -126,6 +130,17 @@ public function getRegion(): string;
 ```
 
 These methods allow you to access specific details about the CloudWatch alarm that triggered the notification.
+
+#### Generic SNS Notification
+
+The `SNSNotificationReceived` event's message implements the `SNSNotificationInterface`, providing the following
+method:
+
+```php
+public function getRawMessage(): string;
+```
+
+This method returns the raw SNS `Message` payload as a string.
 
 #### S3 Notification
 
