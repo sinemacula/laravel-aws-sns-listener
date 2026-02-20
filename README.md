@@ -99,6 +99,10 @@ composer test-coverage
 composer check
 ```
 
+## Contributing
+
+Contributions are welcome via GitHub pull requests.
+
 ## Security
 
 If you discover a security issue, please contact Sine Macula directly rather than opening a public issue.
