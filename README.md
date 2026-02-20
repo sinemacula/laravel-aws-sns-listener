@@ -74,8 +74,6 @@ Each event carries a typed message object implementing the matching contract int
 ```php
 <?php
 
-declare(strict_types=1);
-
 namespace App\Listeners;
 
 use SineMacula\Aws\Sns\Events\S3NotificationReceived;
