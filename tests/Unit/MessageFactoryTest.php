@@ -95,12 +95,26 @@ final class MessageFactoryTest extends TestCase
             SNSNotification::class,
         ];
 
-        yield 'generic notification with non json payload' => [
+        yield 'generic notification with non-string payload' => [
             [
                 'Type'    => 'Notification',
-                'Message' => 'not-json',
+                'Message' => ['not', 'a', 'string'],
             ],
             SNSNotification::class,
+        ];
+    }
+
+    /**
+     * @return iterable<string, array{0: array<string, mixed>, 1: string}>
+     */
+    public static function unsupportedMessageProvider(): iterable
+    {
+        yield 'unsupported string type' => [
+            [
+                'Type'    => 'UnsupportedType',
+                'Message' => 'not-json',
+            ],
+            'Unsupported SNS message type: UnsupportedType',
         ];
     }
 
@@ -125,18 +139,38 @@ final class MessageFactoryTest extends TestCase
     /**
      * It throws for unsupported message types.
      *
+     * @param  array<string, mixed>  $message_data
+     * @param  string  $expected_message
+     * @return void
+     */
+    #[DataProvider('unsupportedMessageProvider')]
+    #[Test]
+    public function itThrowsForUnsupportedMessageTypes(array $message_data, string $expected_message): void
+    {
+        $message = AwsSnsMessageBuilder::makeMessage($message_data);
+
+        $this->expectException(UnsupportedMessageException::class);
+        $this->expectExceptionMessage($expected_message);
+
+        MessageFactory::make($message);
+    }
+
+    /**
+     * It throws with undefined type when the message type is not a string.
+     *
      * @return void
      */
     #[Test]
-    public function itThrowsForUnsupportedMessageTypes(): void
+    public function itThrowsWithUndefinedTypeWhenMessageTypeIsNotAString(): void
     {
         $message = AwsSnsMessageBuilder::makeMessage([
             'Type'    => 'UnsupportedType',
             'Message' => 'not-json',
         ]);
+        $message['Type'] = ['invalid'];
 
         $this->expectException(UnsupportedMessageException::class);
-        $this->expectExceptionMessage('Unsupported SNS message type: UnsupportedType');
+        $this->expectExceptionMessage('Unsupported SNS message type: Undefined');
 
         MessageFactory::make($message);
     }

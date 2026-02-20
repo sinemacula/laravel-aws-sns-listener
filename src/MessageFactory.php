@@ -30,7 +30,10 @@ class MessageFactory
      */
     public static function make(Message $message): MessageInterface
     {
-        $message_type = self::resolveMessageType($message);
+        $message_type = $message['Type'] ?? null;
+        $message_type = is_string($message_type)
+            ? $message_type
+            : 'Undefined';
 
         return match (true) {
             self::isSubscriptionConfirmation($message) => new SubscriptionConfirmation($message),
@@ -154,20 +157,5 @@ class MessageFactory
         }
 
         return json_decode($payload, true);
-    }
-
-    /**
-     * Resolve the SNS message type as a safe string.
-     *
-     * @param  \Aws\Sns\Message  $message
-     * @return string
-     */
-    private static function resolveMessageType(Message $message): string
-    {
-        $message_type = $message['Type'] ?? null;
-
-        return is_string($message_type)
-            ? $message_type
-            : 'Undefined';
     }
 }
