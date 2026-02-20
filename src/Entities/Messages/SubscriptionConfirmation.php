@@ -19,6 +19,10 @@ class SubscriptionConfirmation extends Message implements SubscriptionConfirmati
      */
     public function getSubscribeUrl(): string
     {
-        return $this->message['SubscribeURL'];
+        $subscribe_url = $this->message['SubscribeURL'] ?? null;
+
+        return is_string($subscribe_url)
+            ? $subscribe_url
+            : '';
     }
 }

@@ -14,16 +14,16 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
 class Notification extends BaseNotification implements SesNotificationInterface
 {
     /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Delivery|null */
-    protected ?Delivery $delivery;
+    protected ?Delivery $delivery = null;
 
     /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Bounce|null */
-    protected ?Bounce $bounce;
+    protected ?Bounce $bounce = null;
 
     /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Complaint|null */
-    protected ?Complaint $complaint;
+    protected ?Complaint $complaint = null;
 
     /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Mail */
-    protected Mail $mail;
+    protected ?Mail $mail = null;
 
     /**
      * Return the notification type.
