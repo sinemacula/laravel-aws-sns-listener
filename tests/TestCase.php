@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Contracts\Foundation\Application;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use SineMacula\Aws\Sns\SnsServiceProvider;
 
@@ -10,6 +11,8 @@ use SineMacula\Aws\Sns\SnsServiceProvider;
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
+ *
+ * @internal
  */
 abstract class TestCase extends BaseTestCase
 {
@@ -19,10 +22,23 @@ abstract class TestCase extends BaseTestCase
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return array<int, class-string>
      */
-    protected function getPackageProviders($app): array
+    #[\Override]
+    protected function getPackageProviders(mixed $app): array
     {
         return [
-            SnsServiceProvider::class
+            SnsServiceProvider::class,
         ];
+    }
+
+    /**
+     * Return the application instance.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application
+     */
+    protected function appInstance(): Application
+    {
+        static::assertNotNull($this->app);
+
+        return $this->app;
     }
 }

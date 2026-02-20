@@ -21,7 +21,7 @@ abstract class Message extends Entity
      */
     public function __construct(
 
-        /** The SNS message */
+        /** @var \Aws\Sns\Message The SNS message. */
         protected BaseMessage $message,
 
     ) {
@@ -142,12 +142,6 @@ abstract class Message extends Entity
             return null;
         }
 
-        $normalized_message_attributes = [];
-
-        foreach ((array) $message_attributes as $key => $value) {
-            $normalized_message_attributes[(string) $key] = $value;
-        }
-
-        return $normalized_message_attributes;
+        return (array) $message_attributes;
     }
 }

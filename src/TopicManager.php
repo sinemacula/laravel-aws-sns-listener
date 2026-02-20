@@ -18,8 +18,10 @@ class TopicManager
      * @param  array<int, string>  $topics
      */
     public function __construct(
-        /** The SNS topics */
+
+        /** @var array<int, string> The SNS topics. */
         protected array $topics = [],
+
     ) {}
 
     /**

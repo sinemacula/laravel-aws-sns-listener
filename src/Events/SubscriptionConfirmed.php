@@ -19,7 +19,7 @@ class SubscriptionConfirmed
      */
     public function __construct(
 
-        /** The SNS message instance */
+        /** @var \SineMacula\Aws\Sns\Entities\Messages\Contracts\SubscriptionConfirmationInterface The SNS message instance. */
         protected SubscriptionConfirmationInterface $message,
 
     ) {}

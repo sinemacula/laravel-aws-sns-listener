@@ -13,6 +13,8 @@ Current implementation includes:
 - Message factory mapping from AWS SNS payloads into typed message entities
 - Event dispatch for generic and provider-specific SNS notifications (SES, S3, CloudWatch)
 - Topic management utilities for expected topics and subscription confirmation behavior
+- Per-file unit test structure that mirrors `src/` paths under `tests/Unit/`
+- Full PHPUnit coverage baseline at 100% classes, methods, and lines
 
 This repository is intended to remain:
 
@@ -61,12 +63,16 @@ The agent is **not** responsible for:
 ## PHP Standards
 
 - Use strict types and type hints everywhere
+- Declare explicit scalar/object types on class constants (for example `private const string FOO = 'bar';`)
 - Do not nest control structures beyond 1 level (exceptionally 2)
 - Use `match` for complex conditionals; avoid long `if/else if` chains and `switch`
 - Prefer immutable data structures where they improve clarity
 - Avoid exceptions for control flow
 - Use PSR-4 autoloading and namespaces
 - Follow PSR-12 formatting
+- Every class must include a class-level docblock with a concise summary, `@author`, and `@copyright`
+- For internal classes (including tests and test-support helpers), include `@internal` after copyright
+- Property and constant doc comments must use single-line `@var` format
 - Use dedicated, domain-specific exceptions
 - Trust type declarations; avoid defensive verbosity
 - Maintain backward compatibility unless explicitly instructed otherwise
@@ -202,6 +208,8 @@ Manual approval is required for:
 
 - Use `$php-test-author` for all test authoring and test updates
 - When tests are changed, run the self-review gate and full PHP quality chain before `composer test`
+- Unit tests must mirror source file paths (for example `src/Foo/Bar.php` -> `tests/Unit/Foo/BarTest.php`)
+- Preserve 100% coverage baseline across classes, methods, and lines; coverage regressions are not acceptable
 
 ## Branch Naming Convention
 

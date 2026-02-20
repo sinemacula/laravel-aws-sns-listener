@@ -10,7 +10,7 @@ namespace SineMacula\Aws\Sns\Entities;
  */
 abstract class Entity
 {
-    /** @var \stdClass */
+    /** @var \stdClass Attributes value. */
     protected \stdClass $attributes;
 
     /**
@@ -22,19 +22,13 @@ abstract class Entity
     {
         if ($attributes instanceof \stdClass) {
             $this->attributes = $attributes;
-
             return;
         }
 
-        $encoded_attributes = json_encode($attributes ?? []);
-        $decoded_attributes = json_decode(
-            is_string($encoded_attributes)
-                ? $encoded_attributes
-                : '{}',
-        );
+        $encoded = json_encode($attributes ?? []);
 
-        $this->attributes = $decoded_attributes instanceof \stdClass
-            ? $decoded_attributes
+        $this->attributes = is_string($encoded)
+            ? (json_decode($encoded) ?? new \stdClass)
             : new \stdClass;
     }
 

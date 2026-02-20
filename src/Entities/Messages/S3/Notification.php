@@ -13,7 +13,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
  */
 class Notification extends BaseNotification implements S3NotificationInterface
 {
-    /** @var array<int, \SineMacula\Aws\Sns\Entities\Messages\S3\Record>|null */
+    /** @var array<int, \SineMacula\Aws\Sns\Entities\Messages\S3\Record>|null Mapped S3 records cache. */
     protected ?array $records = null;
 
     /**

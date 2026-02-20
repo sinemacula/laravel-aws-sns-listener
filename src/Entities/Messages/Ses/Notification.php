@@ -13,16 +13,16 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
  */
 class Notification extends BaseNotification implements SesNotificationInterface
 {
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Delivery|null */
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Delivery|null Delivery value. */
     protected ?Delivery $delivery = null;
 
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Bounce|null */
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Bounce|null Bounce value. */
     protected ?Bounce $bounce = null;
 
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Complaint|null */
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Complaint|null Complaint value. */
     protected ?Complaint $complaint = null;
 
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Mail */
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Mail|null Mail value. */
     protected ?Mail $mail = null;
 
     /**

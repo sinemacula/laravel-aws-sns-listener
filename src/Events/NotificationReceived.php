@@ -19,7 +19,7 @@ class NotificationReceived
      */
     public function __construct(
 
-        /** The SNS message */
+        /** @var \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface The SNS message. */
         protected NotificationInterface $notification,
 
     ) {}
