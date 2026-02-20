@@ -2,9 +2,6 @@
 
 namespace SineMacula\Aws\Sns\Entities;
 
-use Exception;
-use stdClass;
-
 /**
  * Base entity.
  *
@@ -14,18 +11,31 @@ use stdClass;
 abstract class Entity
 {
     /** @var \stdClass */
-    protected stdClass $attributes;
+    protected \stdClass $attributes;
 
     /**
      * Create a new Entity instance.
      *
-     * @param  \stdClass|array|null  $attributes
+     * @param  array<string, mixed>|\stdClass|null  $attributes
      */
-    public function __construct(stdClass|array|null $attributes = null)
+    public function __construct(array|\stdClass|null $attributes = null)
     {
-        $this->attributes = json_decode(
-            json_encode($attributes ?? new stdClass), false
+        if ($attributes instanceof \stdClass) {
+            $this->attributes = $attributes;
+
+            return;
+        }
+
+        $encoded_attributes = json_encode($attributes ?? []);
+        $decoded_attributes = json_decode(
+            is_string($encoded_attributes)
+                ? $encoded_attributes
+                : '{}',
         );
+
+        $this->attributes = $decoded_attributes instanceof \stdClass
+            ? $decoded_attributes
+            : new \stdClass;
     }
 
     /**
@@ -34,21 +44,21 @@ abstract class Entity
      * @param  string  $property
      * @return mixed
      *
-     * @throws \Exception
+     * @throws \OutOfBoundsException
      */
     public function __get(string $property): mixed
     {
         $getter = "get{$this->convertToPascalCase($property)}";
 
         if (method_exists($this, $getter)) {
-            return $this->{$getter}();
+            return call_user_func([$this, $getter]);
         }
 
         if (isset($this->attributes->{$property})) {
             return $this->attributes->{$property};
         }
 
-        throw new Exception("Property '{$property}' does not exist.");
+        throw new \OutOfBoundsException("Property '{$property}' does not exist.");
     }
 
     /**
@@ -65,10 +75,17 @@ abstract class Entity
     /**
      * Get the entity as an array.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
-        return json_decode(json_encode($this->attributes), true);
+        $encoded_attributes = json_encode($this->attributes);
+        $decoded_attributes = is_string($encoded_attributes)
+            ? json_decode($encoded_attributes, true)
+            : null;
+
+        return is_array($decoded_attributes)
+            ? $decoded_attributes
+            : [];
     }
 }

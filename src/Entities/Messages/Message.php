@@ -5,7 +5,6 @@ namespace SineMacula\Aws\Sns\Entities\Messages;
 use Aws\Sns\Message as BaseMessage;
 use Carbon\Carbon;
 use SineMacula\Aws\Sns\Entities\Entity;
-use stdClass;
 
 /**
  * The base AWS SNS message instance.
@@ -23,18 +22,20 @@ abstract class Message extends Entity
     public function __construct(
 
         /** The SNS message */
-        protected BaseMessage $message
+        protected BaseMessage $message,
 
     ) {
-        $decodedMessage = json_decode($message['Message'], true);
+        $raw_message = $message['Message'];
+        $raw_message = is_string($raw_message) ? $raw_message : '';
 
-        if (!is_array($decodedMessage)) {
-            $decodedMessage = ['raw' => (string) $message['Message']];
-        }
+        $decoded_message = json_decode($raw_message, true);
+        $decoded_message = is_array($decoded_message)
+            ? $decoded_message
+            : ['raw' => $raw_message];
 
         parent::__construct([
             ...$message->toArray(),
-            'Message' => $decodedMessage
+            'Message' => $decoded_message,
         ]);
     }
 
@@ -93,7 +94,7 @@ abstract class Message extends Entity
      *
      * @return \stdClass
      */
-    public function getMessage(): stdClass
+    public function getMessage(): \stdClass
     {
         return $this->attributes->Message;
     }
@@ -131,10 +132,22 @@ abstract class Message extends Entity
     /**
      * Return the message attributes.
      *
-     * @return array|null
+     * @return array<string, mixed>|null
      */
     public function getAttributes(): ?array
     {
-        return $this->attributes->MessageAttributes ?? null;
+        $message_attributes = $this->attributes->MessageAttributes ?? null;
+
+        if (!is_array($message_attributes) && !$message_attributes instanceof \stdClass) {
+            return null;
+        }
+
+        $normalized_message_attributes = [];
+
+        foreach ((array) $message_attributes as $key => $value) {
+            $normalized_message_attributes[(string) $key] = $value;
+        }
+
+        return $normalized_message_attributes;
     }
 }

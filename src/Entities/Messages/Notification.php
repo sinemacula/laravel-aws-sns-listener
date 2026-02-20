@@ -17,6 +17,10 @@ abstract class Notification extends Message
      */
     public function getUnsubscribeUrl(): ?string
     {
-        return $this->message['UnsubscribeURL'];
+        $unsubscribe_url = $this->message['UnsubscribeURL'] ?? null;
+
+        return is_string($unsubscribe_url)
+            ? $unsubscribe_url
+            : null;
     }
 }

@@ -14,10 +14,10 @@ use SineMacula\Aws\Sns\Entities\Entity;
 class Record extends Entity
 {
     /** @var \SineMacula\Aws\Sns\Entities\Messages\S3\Bucket */
-    protected Bucket $bucket;
+    protected ?Bucket $bucket = null;
 
     /** @var \SineMacula\Aws\Sns\Entities\Messages\S3\S3Object */
-    protected S3Object $object;
+    protected ?S3Object $object = null;
 
     /**
      * Return the event source.
