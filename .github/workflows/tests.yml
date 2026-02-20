@@ -31,10 +31,7 @@ jobs:
     # ==========================================================================
     tests:
         name: Test / PHP ${{ matrix.php }}
-        runs-on: ubuntu-latest-large
-
-        env:
-            VALKEY_GLIDE_VERSION: 1.0.0
+        runs-on: ubuntu-latest
 
         strategy:
             fail-fast: true
@@ -45,17 +42,6 @@ jobs:
             group: tests-${{ github.workflow }}-${{ github.ref }}
             cancel-in-progress: true
 
-        services:
-            redis:
-                image: redis:7-alpine
-                ports:
-                    - 6379:6379
-                options: >-
-                    --health-cmd "redis-cli ping"
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-
         steps:
             -   name: Checkout
                 uses: actions/checkout@v4
@@ -64,17 +50,9 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    extensions: dom, bcmath
+                    extensions: dom
                     coverage: pcov
-                    tools: composer, pie
-
-            -   name: Install system dependencies
-                run: |
-                    sudo apt-get update -qq
-                    sudo apt-get install -y --no-install-recommends \
-                        libprotobuf-c-dev \
-                        protobuf-compiler \
-                        protobuf-c-compiler
+                    tools: composer
 
             -   name: Cache Composer cache
                 uses: actions/cache@v4
@@ -82,43 +60,7 @@ jobs:
                     path: ~/.composer/cache
                     key: composer-cache-${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
                     restore-keys: composer-cache-${{ runner.os }}-
-
-            -   name: Cache PIE
-                uses: actions/cache@v4
-                with:
-                    path: |
-                        ~/.config/pie
-                        ~/.cache/pie
-                    key: pie-cache-${{ runner.os }}-${{ matrix.php }}-${{ env.VALKEY_GLIDE_VERSION }}
-                    restore-keys: pie-cache-${{ runner.os }}-${{ matrix.php }}-
-
-            -   name: Cache Cargo
-                uses: actions/cache@v4
-                with:
-                    path: |
-                        ~/.cargo/bin
-                        ~/.cargo/registry
-                        ~/.cargo/git
-                    key: cargo-cache-${{ runner.os }}-${{ matrix.php }}-cbindgen
-                    restore-keys: cargo-cache-${{ runner.os }}-${{ matrix.php }}-
-
-            -   name: Install cbindgen
-                run: |
-                    set -euo pipefail
-                    echo "${HOME}/.cargo/bin" >> "${GITHUB_PATH}"
-
-                    if ! command -v cbindgen >/dev/null 2>&1; then
-                        cargo install cbindgen --locked
-                    fi
-
-            -   name: Install Valkey GLIDE extension
-                run: |
-                    set -euo pipefail
-                    pie_bin="$(command -v pie)"
-
-                    sudo env "HOME=${HOME}" "PATH=${PATH}" "${pie_bin}" install --no-interaction --make-parallel-jobs 1 "valkey-io/valkey-glide-php:${VALKEY_GLIDE_VERSION}"
-                    php -m | grep -i '^valkey_glide$'
-
+                    
             -   name: Cache vendor
                 uses: actions/cache@v4
                 with:
@@ -131,6 +73,7 @@ jobs:
                 run: composer install --prefer-dist --no-interaction --no-progress
 
             -   name: PHPUnit
+                if: ${{ !(github.event_name == 'push' && github.ref == 'refs/heads/master') }}
                 run: composer test
 
             -   name: PHPUnit + Coverage
