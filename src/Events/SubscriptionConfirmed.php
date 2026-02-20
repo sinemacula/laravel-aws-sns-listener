@@ -20,7 +20,7 @@ class SubscriptionConfirmed
     public function __construct(
 
         /** The SNS message instance */
-        protected SubscriptionConfirmationInterface $message
+        protected SubscriptionConfirmationInterface $message,
 
     ) {}
 

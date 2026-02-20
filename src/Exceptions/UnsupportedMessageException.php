@@ -2,8 +2,6 @@
 
 namespace SineMacula\Aws\Sns\Exceptions;
 
-use InvalidArgumentException;
-
 /**
  * Unsupported message exception.
  *
@@ -12,6 +10,4 @@ use InvalidArgumentException;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class UnsupportedMessageException extends InvalidArgumentException
-{
-}
+class UnsupportedMessageException extends \InvalidArgumentException {}
