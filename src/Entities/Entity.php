@@ -26,9 +26,10 @@ abstract class Entity
         }
 
         $encoded = json_encode($attributes ?? []);
+        $decoded = is_string($encoded) ? json_decode($encoded) : null;
 
-        $this->attributes = is_string($encoded)
-            ? (json_decode($encoded) ?? new \stdClass)
+        $this->attributes = $decoded instanceof \stdClass
+            ? $decoded
             : new \stdClass;
     }
 

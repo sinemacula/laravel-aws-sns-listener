@@ -154,8 +154,8 @@ Rules:
 - If `$php-quality-remediator` changes code, rerun the full PHP skill chain
 - Maximum passes per language lane per task: **3**
 - If unresolved issues remain after the pass budget is exhausted:
-    - Stop
-    - Return `blocked` or `approval-required` with a clear explanation
+  - Stop
+  - Return `blocked` or `approval-required` with a clear explanation
 
 ## Editing Guardrails
 
@@ -179,9 +179,9 @@ Manual approval is required for:
 - Code snippets in docs (for example in `README.md`) must follow the same standards as source code and be validated with
   the relevant skills
 - If a change introduces **new functionality** or **modifies existing behavior**, the agent MUST:
-    - Update `README.md` accordingly
-    - Update `AGENTS.md` accordingly
-    - Ensure documentation accurately reflects the new or changed behavior
+  - Update `README.md` accordingly
+  - Update `AGENTS.md` accordingly
+  - Ensure documentation accurately reflects the new or changed behavior
 - Documentation updates are mandatory, not optional
 
 ## Canonical Commands
@@ -212,10 +212,10 @@ Manual approval is required for:
 ## Branch Naming Convention
 
 - Prefix branches with:
-    - `feature/`
-    - `bugfix/`
-    - `hotfix/`
-    - `refactor/`
+  - `feature/`
+  - `bugfix/`
+  - `hotfix/`
+  - `refactor/`
 - Branch names SHOULD include the GitHub issue number when available Format:
   `<type>/issue-<number>-short-hyphenated-description` Example:
   `feature/issue-123-add-sns-notification-event`
