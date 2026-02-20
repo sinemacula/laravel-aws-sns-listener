@@ -57,6 +57,6 @@ class TopicManager
      */
     public function isTopicRegistered(string $topic): bool
     {
-        return in_array($topic, $this->topics);
+        return in_array($topic, $this->topics, true);
     }
 }

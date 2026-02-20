@@ -5,9 +5,9 @@ namespace SineMacula\Aws\Sns;
 use Aws\Sns\Message;
 use SineMacula\Aws\Sns\Entities\Messages\CloudWatch\Notification as CloudWatchNotification;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface;
-use SineMacula\Aws\Sns\Entities\Messages\SNSNotification;
 use SineMacula\Aws\Sns\Entities\Messages\S3\Notification as S3Notification;
 use SineMacula\Aws\Sns\Entities\Messages\Ses\Notification as SesNotification;
+use SineMacula\Aws\Sns\Entities\Messages\SNSNotification;
 use SineMacula\Aws\Sns\Entities\Messages\SubscriptionConfirmation;
 use SineMacula\Aws\Sns\Entities\Messages\TestNotification;
 use SineMacula\Aws\Sns\Exceptions\UnsupportedMessageException;
@@ -30,6 +30,8 @@ class MessageFactory
      */
     public static function make(Message $message): MessageInterface
     {
+        $message_type = self::resolveMessageType($message);
+
         return match (true) {
             self::isSubscriptionConfirmation($message) => new SubscriptionConfirmation($message),
             self::isS3Notification($message)           => new S3Notification($message),
@@ -37,7 +39,7 @@ class MessageFactory
             self::isCloudWatchNotification($message)   => new CloudWatchNotification($message),
             self::isTestNotification($message)         => new TestNotification($message),
             self::isGenericNotification($message)      => new SNSNotification($message),
-            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . ($message['Type'] ?? 'Undefined'))
+            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . $message_type),
         };
     }
 
@@ -87,8 +89,8 @@ class MessageFactory
             && in_array($message['notificationType'], [
                 'Bounce',
                 'Complaint',
-                'Delivery'
-            ]);
+                'Delivery',
+            ], true);
     }
 
     /**
@@ -145,6 +147,27 @@ class MessageFactory
      */
     private static function decodeMessagePayload(Message $message): mixed
     {
-        return json_decode($message['Message'], true);
+        $payload = $message['Message'] ?? null;
+
+        if (!is_string($payload)) {
+            return null;
+        }
+
+        return json_decode($payload, true);
+    }
+
+    /**
+     * Resolve the SNS message type as a safe string.
+     *
+     * @param  \Aws\Sns\Message  $message
+     * @return string
+     */
+    private static function resolveMessageType(Message $message): string
+    {
+        $message_type = $message['Type'] ?? null;
+
+        return is_string($message_type)
+            ? $message_type
+            : 'Undefined';
     }
 }

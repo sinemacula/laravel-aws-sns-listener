@@ -8,7 +8,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\SNSNotificationInterface;
  * AWS SNS generic notification instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class SNSNotification extends Notification implements SNSNotificationInterface
 {
@@ -19,6 +19,10 @@ class SNSNotification extends Notification implements SNSNotificationInterface
      */
     public function getRawMessage(): string
     {
-        return $this->getBaseMessage()['Message'];
+        $raw_message = $this->getBaseMessage()['Message'] ?? null;
+
+        return is_string($raw_message)
+            ? $raw_message
+            : '';
     }
 }

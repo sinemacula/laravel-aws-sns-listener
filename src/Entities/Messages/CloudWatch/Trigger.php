@@ -29,7 +29,7 @@ class Trigger extends Entity
      */
     public function getNamespace(): string
     {
-        return $this->attributes->MetricName;
+        return $this->attributes->Namespace;
     }
 
     /**

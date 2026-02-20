@@ -25,40 +25,40 @@ class S3Object extends Entity
     /**
      * Return the size.
      *
-     * @return int
+     * @return int|null
      */
-    public function getSize(): int
+    public function getSize(): ?int
     {
-        return $this->attributes->size;
+        return isset($this->attributes->size) ? (int) $this->attributes->size : null;
     }
 
     /**
      * Return the eTag.
      *
-     * @return string
+     * @return string|null
      */
-    public function getETag(): string
+    public function getETag(): ?string
     {
-        return $this->attributes->eTag;
+        return isset($this->attributes->eTag) ? (string) $this->attributes->eTag : null;
     }
 
     /**
      * Return the version identifier.
      *
-     * @return string
+     * @return string|null
      */
-    public function getVersionId(): string
+    public function getVersionId(): ?string
     {
-        return $this->attributes->versionId;
+        return isset($this->attributes->versionId) ? (string) $this->attributes->versionId : null;
     }
 
     /**
      * Return the sequencer.
      *
-     * @return string
+     * @return string|null
      */
-    public function getSequencer(): string
+    public function getSequencer(): ?string
     {
-        return $this->attributes->sequencer;
+        return isset($this->attributes->sequencer) ? (string) $this->attributes->sequencer : null;
     }
 }

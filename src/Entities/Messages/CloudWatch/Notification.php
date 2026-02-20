@@ -81,7 +81,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      */
     public function getStateChangeTime(): Carbon
     {
-        return Carbon::parse($this->attributes->StateChangeTime);
+        return Carbon::parse($this->attributes->Message->StateChangeTime);
     }
 
     /**
@@ -91,6 +91,6 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      */
     public function getRegion(): string
     {
-        return $this->attributes->Region;
+        return $this->attributes->Message->Region;
     }
 }
