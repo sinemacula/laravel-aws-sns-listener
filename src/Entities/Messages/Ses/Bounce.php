@@ -36,7 +36,7 @@ class Bounce extends Entity
     /**
      * Return the bounced recipients.
      *
-     * @return array
+     * @return array<int, \stdClass>
      */
     public function getBouncedRecipients(): array
     {

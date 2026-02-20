@@ -26,7 +26,7 @@ class Delivery extends Entity
     /**
      * Return the recipients.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getRecipients(): array
     {

@@ -26,7 +26,7 @@ class Complaint extends Entity
     /**
      * Return the complained recipients.
      *
-     * @return array
+     * @return array<int, \stdClass>
      */
     public function getComplainedRecipients(): array
     {
