@@ -2,17 +2,17 @@
 
 ## Project Overview
 
-Laravel Valkey GLIDE is Sine Macula's Laravel integration package for Valkey GLIDE (`ext-valkey_glide`).
-It provides a Laravel-native Redis driver/adapter focused on resilience during managed infrastructure events where
-transient disconnects and reconnects are expected.
+Laravel AWS SNS Listener is Sine Macula's Laravel integration package for receiving and handling AWS SNS messages.
+It provides a Laravel-native integration for SNS subscription confirmation, signature validation, typed payload
+mapping, and event dispatch.
 
 Current implementation includes:
 
-- Service provider registration for the `valkey-glide` Redis client
-- Connector + connection wiring for Laravel Redis
-- Config normalization from Laravel arrays to GLIDE connect arguments
-- Connection wrapper behavior for command dispatch, prefixing, and safe transient retry
-- External integration tests that validate extension-backed behavior against a real Redis/Valkey server
+- Service provider registration and package configuration for SNS endpoint handling
+- Controller + middleware wiring for receiving and validating SNS requests
+- Message factory mapping from AWS SNS payloads into typed message entities
+- Event dispatch for generic and provider-specific SNS notifications (SES, S3, CloudWatch)
+- Topic management utilities for expected topics and subscription confirmation behavior
 
 This repository is intended to remain:
 
@@ -22,23 +22,23 @@ This repository is intended to remain:
 
 ## Namespace Structure
 
-- Root namespace: `SineMacula\Valkey\`
-- Source: `src/` -> `SineMacula\Valkey\`
+- Root namespace: `SineMacula\Aws\Sns\`
+- Source: `src/` -> `SineMacula\Aws\Sns\`
 - Tests: `tests/` -> `Tests\`
 
 ### Domain Scope
 
 The package currently centers around:
 
-- Service provider registration for a custom Laravel Redis client (`valkey-glide`)
-- Laravel Redis connector and connection wiring for Valkey GLIDE
-- Configuration mapping from Laravel Redis arrays to Valkey GLIDE connection options
-- Compatibility behavior in the connection wrapper (command dispatch, events, key prefix handling)
-- Safe retry-once behavior for idempotent commands on transient transport failures
-- Compatibility for Laravel cache, queue, session, and direct Redis usage through the configured client
+- Service provider registration and configurable route handling for SNS callbacks
+- Signature validation middleware for trusted AWS SNS request verification
+- Message factory and typed entity modeling for SNS message categories
+- Domain entities and contracts for SES, S3, and CloudWatch notification payloads
+- Laravel event dispatch for notification processing and subscription confirmation flows
+- Compatibility behavior for Laravel event listeners consuming typed SNS messages
 
-This package is an integration layer. It must not become a generic Valkey client, an infrastructure provisioning tool,
-or a Laravel fork.
+This package is an integration layer. It must not become a generic AWS SDK wrapper, an infrastructure provisioning
+tool, or a Laravel fork.
 
 ## Agent Role and Responsibility
 
@@ -79,7 +79,7 @@ The agent is **not** responsible for:
 - Apply DDD principles where appropriate (entities, value objects, services)
 - Follow Clean Code and SOLID principles
 - Depend on interfaces, not implementations
-- Preserve Laravel-facing contracts and connection behavior compatibility
+- Preserve Laravel-facing contracts and SNS event-handling compatibility
 - Use `readonly` classes where immutability is appropriate
 
 ## Mandatory Skill Coverage
@@ -187,15 +187,15 @@ Manual approval is required for:
 - Run tests: `composer test`
 - Run external integration tests: `composer test-external`
 - Run tests with coverage: `composer test-coverage`
-- Run a single test file: `vendor/bin/phpunit tests/Unit/Connectors/ValkeyGlideConnectorTest.php`
+- Run a single test file: `vendor/bin/phpunit tests/Unit/ExampleTest.php`
 - Run a single test method:
-  `vendor/bin/phpunit --filter connectBuildsConnectionAndPassesNormalizedConnectArguments tests/Unit/Connectors/ValkeyGlideConnectorTest.php`
+  `vendor/bin/phpunit --filter test_that_true_is_true tests/Unit/ExampleTest.php`
 
 ## Tests & Quality
 
 - Use `composer test` (parallel PHPUnit via Paratest) for deterministic local checks
-- Use `composer test-external` for opt-in extension + real Redis/Valkey validation
-- Test connector behavior, config mapping, adapter compatibility, and contract stability
+- Use `composer test-external` for opt-in checks that require external service dependencies
+- Test signature verification, message mapping, event dispatch behavior, and contract stability
 - If code is not easily testable, propose refactoring before adding tests
 
 ### Test Writing
@@ -212,9 +212,9 @@ Manual approval is required for:
   - `refactor/`
 - Branch names SHOULD include the GitHub issue number when available Format:
   `<type>/issue-<number>-short-hyphenated-description` Example:
-  `feature/issue-123-add-valkey-glide-connector`
+  `feature/issue-123-add-sns-notification-event`
 - If no issue exists, use a concise, hyphenated description Format: `<type>/short-hyphenated-description` Example:
-  `refactor/simplify-glide-connector-mapping`
+  `refactor/simplify-sns-message-factory`
 - Keep names lowercase, concise, and hyphenated
 
 ## Commit Message Guidelines

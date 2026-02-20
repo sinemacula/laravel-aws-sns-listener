@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Verify AWS SNS webhook signature.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class VerifySnsSignature
 {

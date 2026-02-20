@@ -8,7 +8,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\SubscriptionConfirmationInter
  * AWS SNS topic subscription confirmation message instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class SubscriptionConfirmation extends Message implements SubscriptionConfirmationInterface
 {

@@ -9,7 +9,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS SES complaint instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Complaint extends Entity
 {

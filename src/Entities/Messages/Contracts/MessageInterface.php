@@ -10,7 +10,7 @@ use stdClass;
  * Message interface.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 interface MessageInterface
 {

@@ -6,7 +6,7 @@ namespace SineMacula\Aws\Sns\Entities\Messages\Contracts;
  * Subscription confirmation message interface.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 interface SubscriptionConfirmationInterface extends MessageInterface
 {

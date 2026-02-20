@@ -8,7 +8,7 @@ namespace SineMacula\Aws\Sns;
  * Handles the registration of SNS topics.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class TopicManager
 {

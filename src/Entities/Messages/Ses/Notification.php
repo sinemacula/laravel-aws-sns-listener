@@ -9,7 +9,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
  * AWS SNS SES notification instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Notification extends BaseNotification implements SesNotificationInterface
 {

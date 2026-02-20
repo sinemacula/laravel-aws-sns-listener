@@ -8,7 +8,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS S3 bucket instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Bucket extends Entity
 {

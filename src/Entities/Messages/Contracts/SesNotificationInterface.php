@@ -11,7 +11,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Ses\Mail;
  * SES notification interface.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 interface SesNotificationInterface extends NotificationInterface
 {

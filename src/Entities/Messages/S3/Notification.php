@@ -10,7 +10,7 @@ use stdClass;
  * AWS SNS S3 notification instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Notification extends BaseNotification implements S3NotificationInterface
 {

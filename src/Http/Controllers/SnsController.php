@@ -26,7 +26,7 @@ use SineMacula\Aws\Sns\Facades\SnsTopicManager;
  * The AWS SNS controller.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class SnsController
 {

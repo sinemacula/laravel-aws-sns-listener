@@ -6,7 +6,7 @@ namespace SineMacula\Aws\Sns\Entities\Messages\Contracts;
  * Notification interface.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 interface NotificationInterface extends MessageInterface
 {
