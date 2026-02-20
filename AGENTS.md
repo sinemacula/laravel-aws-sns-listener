@@ -154,8 +154,8 @@ Rules:
 - If `$php-quality-remediator` changes code, rerun the full PHP skill chain
 - Maximum passes per language lane per task: **3**
 - If unresolved issues remain after the pass budget is exhausted:
-  - Stop
-  - Return `blocked` or `approval-required` with a clear explanation
+    - Stop
+    - Return `blocked` or `approval-required` with a clear explanation
 
 ## Editing Guardrails
 
@@ -179,9 +179,9 @@ Manual approval is required for:
 - Code snippets in docs (for example in `README.md`) must follow the same standards as source code and be validated with
   the relevant skills
 - If a change introduces **new functionality** or **modifies existing behavior**, the agent MUST:
-  - Update `README.md` accordingly
-  - Update `AGENTS.md` accordingly
-  - Ensure documentation accurately reflects the new or changed behavior
+    - Update `README.md` accordingly
+    - Update `AGENTS.md` accordingly
+    - Ensure documentation accurately reflects the new or changed behavior
 - Documentation updates are mandatory, not optional
 
 ## Canonical Commands
@@ -191,7 +191,6 @@ Manual approval is required for:
 - Run lint/static analysis without auto-fix: `composer check`
 - Format code: `composer format`
 - Run tests: `composer test`
-- Run external integration tests: `composer test-external`
 - Run tests with coverage: `composer test-coverage`
 - Run a single test file: `vendor/bin/phpunit tests/Unit/ExampleTest.php`
 - Run a single test method:
@@ -200,7 +199,6 @@ Manual approval is required for:
 ## Tests & Quality
 
 - Use `composer test` (parallel PHPUnit via Paratest) for deterministic local checks
-- Use `composer test-external` for opt-in checks that require external service dependencies
 - Test signature verification, message mapping, event dispatch behavior, and contract stability
 - If code is not easily testable, propose refactoring before adding tests
 
@@ -214,10 +212,10 @@ Manual approval is required for:
 ## Branch Naming Convention
 
 - Prefix branches with:
-  - `feature/`
-  - `bugfix/`
-  - `hotfix/`
-  - `refactor/`
+    - `feature/`
+    - `bugfix/`
+    - `hotfix/`
+    - `refactor/`
 - Branch names SHOULD include the GitHub issue number when available Format:
   `<type>/issue-<number>-short-hyphenated-description` Example:
   `feature/issue-123-add-sns-notification-event`
@@ -260,8 +258,8 @@ Template:
 ### Mandatory Workflow
 
 1. Run quality gates (if code changed):
-   - `composer check -- --all --no-cache --fix`
-   - `composer test`
+    - `composer check -- --all --no-cache --fix`
+    - `composer test`
 2. Sync and push feature branch:
 
    ```bash
@@ -272,16 +270,16 @@ Template:
    ```
 
 3. **Critical Branch Rule**
-   - Never rebase or force-push `master`
-   - Rebase is allowed only on local feature branches prior to PR merge
+    - Never rebase or force-push `master`
+    - Rebase is allowed only on local feature branches prior to PR merge
 4. **Clean up**
-   - Clear stashes
-   - Prune remote branches
+    - Clear stashes
+    - Prune remote branches
 5. **Verify**
-   - All changes committed
-   - All changes pushed
+    - All changes committed
+    - All changes pushed
 6. **Hand off**
-   - Provide context for next session
+    - Provide context for next session
 
 ## Branching Policy (Trunk-Based)
 

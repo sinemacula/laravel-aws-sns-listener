@@ -133,9 +133,6 @@ jobs:
             -   name: PHPUnit
                 run: composer test
 
-            -   name: PHPUnit External
-                run: composer test-external
-
             -   name: PHPUnit + Coverage
                 if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
                 run: composer test-coverage
