@@ -9,15 +9,15 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS S3 notification record instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Record extends Entity
 {
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\S3\Bucket */
-    protected Bucket $bucket;
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\S3\Bucket|null Bucket value. */
+    protected ?Bucket $bucket = null;
 
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\S3\S3Object */
-    protected S3Object $object;
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\S3\S3Object|null Object value. */
+    protected ?S3Object $object = null;
 
     /**
      * Return the event source.

@@ -9,7 +9,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS SES mail instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Mail extends Entity
 {
@@ -86,7 +86,7 @@ class Mail extends Entity
     /**
      * Return the destinations.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getDestinations(): array
     {
@@ -106,7 +106,7 @@ class Mail extends Entity
     /**
      * Return the headers.
      *
-     * @return array|null
+     * @return array<string, mixed>|null
      */
     public function getHeaders(): ?array
     {
@@ -116,7 +116,7 @@ class Mail extends Entity
     /**
      * Return the common headers.
      *
-     * @return array|null
+     * @return array<string, mixed>|null
      */
     public function getCommonHeaders(): ?array
     {

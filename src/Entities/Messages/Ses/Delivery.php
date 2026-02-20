@@ -9,7 +9,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS SES delivery instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Delivery extends Entity
 {
@@ -26,7 +26,7 @@ class Delivery extends Entity
     /**
      * Return the recipients.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getRecipients(): array
     {

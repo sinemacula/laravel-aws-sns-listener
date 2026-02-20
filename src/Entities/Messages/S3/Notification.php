@@ -4,18 +4,17 @@ namespace SineMacula\Aws\Sns\Entities\Messages\S3;
 
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
-use stdClass;
 
 /**
  * AWS SNS S3 notification instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Notification extends BaseNotification implements S3NotificationInterface
 {
-    /** @var array */
-    protected array $records;
+    /** @var array<int, \SineMacula\Aws\Sns\Entities\Messages\S3\Record>|null Mapped S3 records cache. */
+    protected ?array $records = null;
 
     /**
      * Return the message records.
@@ -24,6 +23,9 @@ class Notification extends BaseNotification implements S3NotificationInterface
      */
     public function getRecords(): array
     {
-        return $this->records ??= array_map(fn (stdClass $record) => new Record($record), $this->getMessage()->Records ?? []);
+        $records = $this->getMessage()->Records ?? [];
+        $records = is_array($records) ? $records : [];
+
+        return $this->records ??= array_map(static fn (array|\stdClass|null $record): Record => new Record($record), $records);
     }
 }

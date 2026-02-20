@@ -8,7 +8,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
  * AWS SNS notification received event.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class NotificationReceived
 {
@@ -19,8 +19,8 @@ class NotificationReceived
      */
     public function __construct(
 
-        /** The SNS message */
-        protected NotificationInterface $notification
+        /** @var \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface The SNS message. */
+        protected NotificationInterface $notification,
 
     ) {}
 

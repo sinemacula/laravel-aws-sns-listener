@@ -8,19 +8,19 @@ namespace SineMacula\Aws\Sns;
  * Handles the registration of SNS topics.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class TopicManager
 {
     /**
      * Create a new topic manager.
      *
-     * @param  array  $topics
+     * @param  array<int, string>  $topics
      */
     public function __construct(
 
-        /** The SNS topics */
-        protected array $topics = []
+        /** @var array<int, string> The SNS topics. */
+        protected array $topics = [],
 
     ) {}
 
@@ -42,7 +42,7 @@ class TopicManager
     /**
      * Return the registered topics.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getTopics(): array
     {
@@ -57,6 +57,6 @@ class TopicManager
      */
     public function isTopicRegistered(string $topic): bool
     {
-        return in_array($topic, $this->topics);
+        return in_array($topic, $this->topics, true);
     }
 }

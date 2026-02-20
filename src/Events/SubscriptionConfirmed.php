@@ -8,7 +8,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\SubscriptionConfirmationInter
  * AWS SNS subscription confirmed event.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class SubscriptionConfirmed
 {
@@ -19,8 +19,8 @@ class SubscriptionConfirmed
      */
     public function __construct(
 
-        /** The SNS message instance */
-        protected SubscriptionConfirmationInterface $message
+        /** @var \SineMacula\Aws\Sns\Entities\Messages\Contracts\SubscriptionConfirmationInterface The SNS message instance. */
+        protected SubscriptionConfirmationInterface $message,
 
     ) {}
 

@@ -5,9 +5,9 @@ namespace SineMacula\Aws\Sns;
 use Aws\Sns\Message;
 use SineMacula\Aws\Sns\Entities\Messages\CloudWatch\Notification as CloudWatchNotification;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface;
-use SineMacula\Aws\Sns\Entities\Messages\SNSNotification;
 use SineMacula\Aws\Sns\Entities\Messages\S3\Notification as S3Notification;
 use SineMacula\Aws\Sns\Entities\Messages\Ses\Notification as SesNotification;
+use SineMacula\Aws\Sns\Entities\Messages\SNSNotification;
 use SineMacula\Aws\Sns\Entities\Messages\SubscriptionConfirmation;
 use SineMacula\Aws\Sns\Entities\Messages\TestNotification;
 use SineMacula\Aws\Sns\Exceptions\UnsupportedMessageException;
@@ -18,7 +18,7 @@ use SineMacula\Aws\Sns\Exceptions\UnsupportedMessageException;
  * Creates native instances of the various SNS messages.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class MessageFactory
 {
@@ -30,6 +30,11 @@ class MessageFactory
      */
     public static function make(Message $message): MessageInterface
     {
+        $message_type = $message['Type'] ?? null;
+        $message_type = is_string($message_type)
+            ? $message_type
+            : 'Undefined';
+
         return match (true) {
             self::isSubscriptionConfirmation($message) => new SubscriptionConfirmation($message),
             self::isS3Notification($message)           => new S3Notification($message),
@@ -37,7 +42,7 @@ class MessageFactory
             self::isCloudWatchNotification($message)   => new CloudWatchNotification($message),
             self::isTestNotification($message)         => new TestNotification($message),
             self::isGenericNotification($message)      => new SNSNotification($message),
-            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . ($message['Type'] ?? 'Undefined'))
+            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . $message_type),
         };
     }
 
@@ -87,8 +92,8 @@ class MessageFactory
             && in_array($message['notificationType'], [
                 'Bounce',
                 'Complaint',
-                'Delivery'
-            ]);
+                'Delivery',
+            ], true);
     }
 
     /**
@@ -145,6 +150,12 @@ class MessageFactory
      */
     private static function decodeMessagePayload(Message $message): mixed
     {
-        return json_decode($message['Message'], true);
+        $payload = $message['Message'] ?? null;
+
+        if (!is_string($payload)) {
+            return null;
+        }
+
+        return json_decode($payload, true);
     }
 }
