@@ -20,7 +20,7 @@ class NotificationReceived
     public function __construct(
 
         /** The SNS message */
-        protected NotificationInterface $notification
+        protected NotificationInterface $notification,
 
     ) {}
 

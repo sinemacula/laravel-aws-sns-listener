@@ -2,7 +2,6 @@
 
 namespace SineMacula\Aws\Sns\Events;
 
-use InvalidArgumentException;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface;
 
 /**
@@ -31,7 +30,7 @@ class S3NotificationReceived extends NotificationReceived
     public function getNotification(): S3NotificationInterface
     {
         if (!$this->notification instanceof S3NotificationInterface) {
-            throw new InvalidArgumentException('Invalid notification type');
+            throw new \InvalidArgumentException('Invalid notification type');
         }
 
         return $this->notification;

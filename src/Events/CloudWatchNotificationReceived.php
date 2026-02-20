@@ -2,7 +2,6 @@
 
 namespace SineMacula\Aws\Sns\Events;
 
-use InvalidArgumentException;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\CloudWatchNotificationInterface;
 
 /**
@@ -31,7 +30,7 @@ class CloudWatchNotificationReceived extends NotificationReceived
     public function getNotification(): CloudWatchNotificationInterface
     {
         if (!$this->notification instanceof CloudWatchNotificationInterface) {
-            throw new InvalidArgumentException('Invalid notification type');
+            throw new \InvalidArgumentException('Invalid notification type');
         }
 
         return $this->notification;
