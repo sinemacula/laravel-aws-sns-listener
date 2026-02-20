@@ -5,14 +5,13 @@ namespace SineMacula\Aws\Sns\Http\Middleware;
 use Aws\Sns\Exception\InvalidSnsMessageException;
 use Aws\Sns\Message;
 use Aws\Sns\MessageValidator;
-use Closure;
-use Exception;
+use Illuminate\Http\Client\Response as HttpResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface;
 use SineMacula\Aws\Sns\MessageFactory;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * Verify AWS SNS webhook signature.
@@ -26,16 +25,16 @@ class VerifySnsSignature
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Closure(\Illuminate\Http\Request): \Symfony\Component\HttpFoundation\Response  $next
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Aws\Sns\Exception\InvalidSnsMessageException
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, \Closure $next): SymfonyResponse
     {
         try {
             $message = MessageFactory::make(Message::fromRawPostData());
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             throw new InvalidSnsMessageException('SNS Message Creation Error: ' . $exception->getMessage(), 0, $exception);
         }
 
@@ -72,10 +71,23 @@ class VerifySnsSignature
      */
     private function resolveValidator(): MessageValidator
     {
-        return new MessageValidator(function (string $certificate_url) {
-            return Cache::rememberForever($certificate_url, function () use ($certificate_url) {
-                return Http::get($certificate_url)->body();
-            });
-        });
+        return new MessageValidator(fn (string $certificate_url) => Cache::rememberForever($certificate_url, fn () => $this->fetchCertificateBody($certificate_url)));
+    }
+
+    /**
+     * Fetch and return the certificate body.
+     *
+     * @param  string  $certificate_url
+     * @return string
+     */
+    private function fetchCertificateBody(string $certificate_url): string
+    {
+        $response = Http::get($certificate_url);
+
+        if (!$response instanceof HttpResponse) {
+            throw new InvalidSnsMessageException('SNS certificate request did not return a valid response.');
+        }
+
+        return $response->body();
     }
 }

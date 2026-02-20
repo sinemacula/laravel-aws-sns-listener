@@ -30,10 +30,12 @@ class SnsServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    #[\Override]
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/aws.php', 'aws'
+            __DIR__ . '/../config/aws.php',
+            'aws',
         );
 
         $this->registerTopicManager();
@@ -56,7 +58,7 @@ class SnsServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__ . '/../config/aws.php' => config_path('aws.php')
+            __DIR__ . '/../config/aws.php' => config_path('aws.php'),
         ], 'config');
     }
 
@@ -67,9 +69,7 @@ class SnsServiceProvider extends ServiceProvider
      */
     private function registerTopicManager(): void
     {
-        $this->app->singleton('sns-topic-manager', function (Application $app) {
-            return new TopicManager($app['config']->get('aws.sns.topics', []));
-        });
+        $this->app->singleton('sns-topic-manager', fn (Application $app) => new TopicManager($app['config']->get('aws.sns.topics', [])));
     }
 
     /**

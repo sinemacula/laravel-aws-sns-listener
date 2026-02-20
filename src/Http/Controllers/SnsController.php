@@ -10,15 +10,15 @@ use Illuminate\Support\Facades\Response;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\CloudWatchNotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
-use SineMacula\Aws\Sns\Entities\Messages\Contracts\SNSNotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\SesNotificationInterface;
+use SineMacula\Aws\Sns\Entities\Messages\Contracts\SNSNotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\SubscriptionConfirmationInterface;
 use SineMacula\Aws\Sns\Events\CloudWatchNotificationReceived;
 use SineMacula\Aws\Sns\Events\NotificationReceived;
-use SineMacula\Aws\Sns\Events\SNSNotificationReceived;
 use SineMacula\Aws\Sns\Events\S3NotificationReceived;
 use SineMacula\Aws\Sns\Events\SesNotificationReceived;
+use SineMacula\Aws\Sns\Events\SNSNotificationReceived;
 use SineMacula\Aws\Sns\Events\SubscriptionConfirmed;
 use SineMacula\Aws\Sns\Facades\SnsTopicManager;
 
@@ -43,7 +43,7 @@ class SnsController
         return match (true) {
             $message instanceof SubscriptionConfirmationInterface => $this->handleSubscription($message),
             $message instanceof NotificationInterface             => $this->handleNotification($message),
-            default                                               => Response::json(['message' => 'Unsupported SNS notification type'], 400)
+            default                                               => Response::json(['message' => 'Unsupported SNS notification type'], 400),
         };
     }
 
@@ -52,10 +52,18 @@ class SnsController
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface
+     *
+     * @throws \InvalidArgumentException
      */
     private function resolveSnsMessage(Request $request): MessageInterface
     {
-        return $request->attributes->get('sns_message');
+        $message = $request->attributes->get('sns_message');
+
+        if (!$message instanceof MessageInterface) {
+            throw new \InvalidArgumentException('SNS message is missing or invalid.');
+        }
+
+        return $message;
     }
 
     /**
@@ -100,19 +108,12 @@ class SnsController
      */
     private function handleNotificationTypes(NotificationInterface $notification): void
     {
-        switch (true) {
-            case $notification instanceof CloudWatchNotificationInterface:
-                Event::dispatch(new CloudWatchNotificationReceived($notification));
-                break;
-            case $notification instanceof S3NotificationInterface:
-                Event::dispatch(new S3NotificationReceived($notification));
-                break;
-            case $notification instanceof SesNotificationInterface:
-                Event::dispatch(new SesNotificationReceived($notification));
-                break;
-            case $notification instanceof SNSNotificationInterface:
-                Event::dispatch(new SNSNotificationReceived($notification));
-                break;
-        }
+        match (true) {
+            $notification instanceof CloudWatchNotificationInterface => Event::dispatch(new CloudWatchNotificationReceived($notification)),
+            $notification instanceof S3NotificationInterface         => Event::dispatch(new S3NotificationReceived($notification)),
+            $notification instanceof SesNotificationInterface        => Event::dispatch(new SesNotificationReceived($notification)),
+            $notification instanceof SNSNotificationInterface        => Event::dispatch(new SNSNotificationReceived($notification)),
+            default                                                  => null,
+        };
     }
 }

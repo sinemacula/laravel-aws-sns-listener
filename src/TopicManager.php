@@ -15,13 +15,11 @@ class TopicManager
     /**
      * Create a new topic manager.
      *
-     * @param  array  $topics
+     * @param  array<int, string>  $topics
      */
     public function __construct(
-
         /** The SNS topics */
-        protected array $topics = []
-
+        protected array $topics = [],
     ) {}
 
     /**
@@ -42,7 +40,7 @@ class TopicManager
     /**
      * Return the registered topics.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function getTopics(): array
     {
