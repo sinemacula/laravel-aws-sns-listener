@@ -19,6 +19,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return string
      */
+    #[\Override]
     public function getAlarmName(): string
     {
         return $this->attributes->Message->AlarmName;
@@ -29,6 +30,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return string|null
      */
+    #[\Override]
     public function getAlarmDescription(): ?string
     {
         return $this->attributes->Message->AlarmDescription ?? null;
@@ -39,6 +41,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return string
      */
+    #[\Override]
     public function getAwsAccountId(): string
     {
         return (string) $this->attributes->Message->AWSAccountId;
@@ -49,6 +52,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return string
      */
+    #[\Override]
     public function getNewStateValue(): string
     {
         return $this->attributes->Message->NewStateValue;
@@ -59,6 +63,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return string
      */
+    #[\Override]
     public function getNewStateReason(): string
     {
         return $this->attributes->Message->NewStateReason;
@@ -69,6 +74,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return string
      */
+    #[\Override]
     public function getOldStateValue(): string
     {
         return $this->attributes->Message->OldStateValue;
@@ -79,6 +85,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return \Carbon\Carbon
      */
+    #[\Override]
     public function getStateChangeTime(): Carbon
     {
         return Carbon::parse($this->attributes->Message->StateChangeTime);
@@ -89,6 +96,7 @@ class Notification extends BaseNotification implements CloudWatchNotificationInt
      *
      * @return string
      */
+    #[\Override]
     public function getRegion(): string
     {
         return $this->attributes->Message->Region;

@@ -65,7 +65,7 @@ class Trigger extends Entity
     /**
      * Return the dimensions.
      *
-     * @return array|null
+     * @return array<int, \stdClass>|null
      */
     public function getDimensions(): ?array
     {
