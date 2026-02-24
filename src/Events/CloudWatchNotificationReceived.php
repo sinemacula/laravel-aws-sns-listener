@@ -27,12 +27,9 @@ class CloudWatchNotificationReceived extends NotificationReceived
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\CloudWatchNotificationInterface
      */
+    #[\Override]
     public function getNotification(): CloudWatchNotificationInterface
     {
-        if (!$this->notification instanceof CloudWatchNotificationInterface) {
-            throw new \InvalidArgumentException('Invalid notification type');
-        }
-
-        return $this->notification;
+        return $this->getValidatedNotification(CloudWatchNotificationInterface::class);
     }
 }

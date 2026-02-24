@@ -27,12 +27,9 @@ class S3NotificationReceived extends NotificationReceived
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface
      */
+    #[\Override]
     public function getNotification(): S3NotificationInterface
     {
-        if (!$this->notification instanceof S3NotificationInterface) {
-            throw new \InvalidArgumentException('Invalid notification type');
-        }
-
-        return $this->notification;
+        return $this->getValidatedNotification(S3NotificationInterface::class);
     }
 }

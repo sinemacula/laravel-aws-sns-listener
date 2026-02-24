@@ -27,12 +27,9 @@ class SNSNotificationReceived extends NotificationReceived
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\SNSNotificationInterface
      */
+    #[\Override]
     public function getNotification(): SNSNotificationInterface
     {
-        if (!$this->notification instanceof SNSNotificationInterface) {
-            throw new \InvalidArgumentException('Invalid notification type');
-        }
-
-        return $this->notification;
+        return $this->getValidatedNotification(SNSNotificationInterface::class);
     }
 }
