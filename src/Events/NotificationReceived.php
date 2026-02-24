@@ -33,4 +33,23 @@ class NotificationReceived
     {
         return $this->notification;
     }
+
+    /**
+     * Return the notification for a specific notification type.
+     *
+     * @template TNotification of \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface
+     *
+     * @param  class-string<TNotification>  $expectedNotificationClass
+     * @return TNotification
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function getValidatedNotification(string $expectedNotificationClass): NotificationInterface
+    {
+        if (!$this->notification instanceof $expectedNotificationClass) {
+            throw new \InvalidArgumentException('Invalid notification type');
+        }
+
+        return $this->notification;
+    }
 }

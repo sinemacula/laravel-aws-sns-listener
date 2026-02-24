@@ -27,12 +27,9 @@ class SesNotificationReceived extends NotificationReceived
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\SesNotificationInterface
      */
+    #[\Override]
     public function getNotification(): SesNotificationInterface
     {
-        if (!$this->notification instanceof SesNotificationInterface) {
-            throw new \InvalidArgumentException('Invalid notification type');
-        }
-
-        return $this->notification;
+        return $this->getValidatedNotification(SesNotificationInterface::class);
     }
 }
