@@ -26,7 +26,7 @@ return [
         | customize it by setting the AWS_SNS_ROUTE environment variable.
         |
         */
-        'route'  => env('AWS_SNS_ROUTE', '/hooks/sns'),
+        'route' => env('AWS_SNS_ROUTE', '/hooks/sns'),
 
         /*
         |-----------------------------------------------------------------------
@@ -40,8 +40,8 @@ return [
         | specified topics are processed.
         |
         */
-        'topics' => explode(',', env('AWS_SNS_TOPICS', ''))
+        'topics' => explode(',', env('AWS_SNS_TOPICS', '')),
 
-    ]
+    ],
 
 ];

@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Facade;
  * AWS SNS topic manager facade.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  *
  * @method static static register(string $topic)
- * @method static array getTopics()
+ * @method static array<int, string> getTopics()
  * @method static bool isTopicRegistered(string $topic)
  */
 class SnsTopicManager extends Facade

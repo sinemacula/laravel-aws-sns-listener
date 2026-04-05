@@ -1,0 +1,10 @@
+parameters:
+    level: 8
+
+    scanDirectories:
+        - %currentWorkingDirectory%/src
+        - %currentWorkingDirectory%/tests
+
+    paths:
+        - src
+        - tests

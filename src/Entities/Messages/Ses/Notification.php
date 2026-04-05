@@ -9,21 +9,21 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
  * AWS SNS SES notification instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Notification extends BaseNotification implements SesNotificationInterface
 {
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Delivery|null */
-    protected ?Delivery $delivery;
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Delivery|null Delivery value. */
+    protected ?Delivery $delivery = null;
 
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Bounce|null */
-    protected ?Bounce $bounce;
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Bounce|null Bounce value. */
+    protected ?Bounce $bounce = null;
 
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Complaint|null */
-    protected ?Complaint $complaint;
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Complaint|null Complaint value. */
+    protected ?Complaint $complaint = null;
 
-    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Mail */
-    protected Mail $mail;
+    /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Mail|null Mail value. */
+    protected ?Mail $mail = null;
 
     /**
      * Return the notification type.

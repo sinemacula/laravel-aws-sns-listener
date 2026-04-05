@@ -2,5 +2,8 @@
 /.idea
 /reports
 /phpunit.xml
+/.phpunit.cache
 .phpunit.result.cache
+.php-cs-fixer.cache
 .DS_Store
+clover.xml

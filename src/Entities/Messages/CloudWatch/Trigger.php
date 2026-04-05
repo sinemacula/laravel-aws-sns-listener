@@ -8,7 +8,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS Cloud Watch trigger instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Trigger extends Entity
 {
@@ -29,7 +29,7 @@ class Trigger extends Entity
      */
     public function getNamespace(): string
     {
-        return $this->attributes->MetricName;
+        return $this->attributes->Namespace;
     }
 
     /**
@@ -65,7 +65,7 @@ class Trigger extends Entity
     /**
      * Return the dimensions.
      *
-     * @return array|null
+     * @return array<int, \stdClass>|null
      */
     public function getDimensions(): ?array
     {

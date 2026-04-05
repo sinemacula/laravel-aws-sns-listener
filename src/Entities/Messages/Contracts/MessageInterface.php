@@ -4,13 +4,12 @@ namespace SineMacula\Aws\Sns\Entities\Messages\Contracts;
 
 use Aws\Sns\Message as BaseMessage;
 use Carbon\Carbon;
-use stdClass;
 
 /**
  * Message interface.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 interface MessageInterface
 {
@@ -54,7 +53,7 @@ interface MessageInterface
      *
      * @return \stdClass
      */
-    public function getMessage(): stdClass;
+    public function getMessage(): \stdClass;
 
     /**
      * Return the signature version.
@@ -80,7 +79,7 @@ interface MessageInterface
     /**
      * Return the message attributes.
      *
-     * @return array|null
+     * @return array<string, mixed>|null
      */
     public function getAttributes(): ?array;
 }

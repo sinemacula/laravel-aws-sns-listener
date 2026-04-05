@@ -9,7 +9,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS SES complaint instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Complaint extends Entity
 {
@@ -26,7 +26,7 @@ class Complaint extends Entity
     /**
      * Return the complained recipients.
      *
-     * @return array
+     * @return array<int, \stdClass>
      */
     public function getComplainedRecipients(): array
     {

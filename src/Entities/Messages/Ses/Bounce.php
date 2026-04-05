@@ -9,7 +9,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * AWS SES bounce instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class Bounce extends Entity
 {
@@ -36,7 +36,7 @@ class Bounce extends Entity
     /**
      * Return the bounced recipients.
      *
-     * @return array
+     * @return array<int, \stdClass>
      */
     public function getBouncedRecipients(): array
     {

@@ -6,7 +6,7 @@ namespace SineMacula\Aws\Sns\Entities\Messages;
  * AWS SNS notification instance.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 abstract class Notification extends Message
 {
@@ -17,6 +17,10 @@ abstract class Notification extends Message
      */
     public function getUnsubscribeUrl(): ?string
     {
-        return $this->message['UnsubscribeURL'];
+        $unsubscribe_url = $this->message['UnsubscribeURL'] ?? null;
+
+        return is_string($unsubscribe_url)
+            ? $unsubscribe_url
+            : null;
     }
 }

@@ -8,7 +8,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
  * AWS SNS notification received event.
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
- * @copyright   2024 Sine Macula Limited.
+ * @copyright   2026 Sine Macula Limited.
  */
 class NotificationReceived
 {
@@ -19,8 +19,8 @@ class NotificationReceived
      */
     public function __construct(
 
-        /** The SNS message */
-        protected NotificationInterface $notification
+        /** @var \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface The SNS message. */
+        protected NotificationInterface $notification,
 
     ) {}
 
@@ -31,6 +31,25 @@ class NotificationReceived
      */
     public function getNotification(): NotificationInterface
     {
+        return $this->notification;
+    }
+
+    /**
+     * Return the notification for a specific notification type.
+     *
+     * @template TNotification of \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface
+     *
+     * @param  class-string<TNotification>  $expected_notification
+     * @return TNotification
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function getValidatedNotification(string $expected_notification): NotificationInterface
+    {
+        if (!$this->notification instanceof $expected_notification) {
+            throw new \InvalidArgumentException('Invalid notification type');
+        }
+
         return $this->notification;
     }
 }
