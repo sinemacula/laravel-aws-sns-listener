@@ -10417,16 +10417,16 @@
         },
         {
             "name": "sinemacula/coding-standards",
-            "version": "v1.14.0",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sinemacula/coding-standards.git",
-                "reference": "a0176dd0d8a2a94ca4d5b31ad694702195be913b"
+                "reference": "2a1fce20643a94598bb33aa05e57f73059cd85b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sinemacula/coding-standards/zipball/a0176dd0d8a2a94ca4d5b31ad694702195be913b",
-                "reference": "a0176dd0d8a2a94ca4d5b31ad694702195be913b",
+                "url": "https://api.github.com/repos/sinemacula/coding-standards/zipball/2a1fce20643a94598bb33aa05e57f73059cd85b6",
+                "reference": "2a1fce20643a94598bb33aa05e57f73059cd85b6",
                 "shasum": ""
             },
             "require": {
@@ -10473,9 +10473,9 @@
             "description": "Centralized coding standards, static analysis configurations, and code quality tooling for all Sine Macula repositories.",
             "support": {
                 "issues": "https://github.com/sinemacula/coding-standards/issues",
-                "source": "https://github.com/sinemacula/coding-standards/tree/v1.14.0"
+                "source": "https://github.com/sinemacula/coding-standards/tree/v1.15.0"
             },
-            "time": "2026-07-21T00:35:55+00:00"
+            "time": "2026-07-21T16:33:45+00:00"
         },
         {
             "name": "slevomat/coding-standard",
