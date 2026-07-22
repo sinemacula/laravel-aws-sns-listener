@@ -39,14 +39,14 @@ final class SubscriptionConfirmationTest extends TestCase
 
         self::assertSame(self::SUBSCRIBE_URL, $message->getSubscribeUrl());
 
-        $invalid_message = AwsSnsMessageBuilder::makeMessage([
+        $invalidMessage = AwsSnsMessageBuilder::makeMessage([
             'Type'         => 'SubscriptionConfirmation',
             'SubscribeURL' => self::SUBSCRIBE_URL,
         ]);
-        $invalid_message['SubscribeURL'] = ['invalid'];
+        $invalidMessage['SubscribeURL'] = ['invalid'];
 
-        $invalid_subscription = new SubscriptionConfirmation($invalid_message);
+        $invalidSubscription = new SubscriptionConfirmation($invalidMessage);
 
-        self::assertSame('', $invalid_subscription->getSubscribeUrl());
+        self::assertSame('', $invalidSubscription->getSubscribeUrl());
     }
 }

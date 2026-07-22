@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages\CloudWatch;
 
 use Carbon\Carbon;
@@ -12,7 +14,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class Notification extends BaseNotification implements CloudWatchNotificationInterface
+final class Notification extends BaseNotification implements CloudWatchNotificationInterface
 {
     /**
      * Return the alarm name.

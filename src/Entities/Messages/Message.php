@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace SineMacula\Aws\Sns\Entities\Messages;
 
 use Aws\Sns\Message as BaseMessage;
@@ -23,19 +27,18 @@ abstract class Message extends Entity
 
         /** @var \Aws\Sns\Message The SNS message. */
         protected BaseMessage $message,
-
     ) {
-        $raw_message = $message['Message'];
-        $raw_message = is_string($raw_message) ? $raw_message : '';
+        $rawMessage = $message['Message'];
+        $rawMessage = is_string($rawMessage) ? $rawMessage : '';
 
-        $decoded_message = json_decode($raw_message, true);
-        $decoded_message = is_array($decoded_message)
-            ? $decoded_message
-            : ['raw' => $raw_message];
+        $decodedMessage = json_decode($rawMessage, true);
+        $decodedMessage = is_array($decodedMessage)
+            ? $decodedMessage
+            : ['raw' => $rawMessage];
 
         parent::__construct([
             ...$message->toArray(),
-            'Message' => $decoded_message,
+            'Message' => $decodedMessage,
         ]);
     }
 
@@ -136,12 +139,12 @@ abstract class Message extends Entity
      */
     public function getAttributes(): ?array
     {
-        $message_attributes = $this->attributes->MessageAttributes ?? null;
+        $messageAttributes = $this->attributes->MessageAttributes ?? null;
 
-        if (!is_array($message_attributes) && !$message_attributes instanceof \stdClass) {
+        if (!is_array($messageAttributes) && !$messageAttributes instanceof \stdClass) {
             return null;
         }
 
-        return (array) $message_attributes;
+        return (array) $messageAttributes;
     }
 }

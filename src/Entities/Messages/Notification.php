@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages;
 
 /**
@@ -17,10 +19,10 @@ abstract class Notification extends Message
      */
     public function getUnsubscribeUrl(): ?string
     {
-        $unsubscribe_url = $this->message['UnsubscribeURL'] ?? null;
+        $unsubscribeUrl = $this->message['UnsubscribeURL'] ?? null;
 
-        return is_string($unsubscribe_url)
-            ? $unsubscribe_url
+        return is_string($unsubscribeUrl)
+            ? $unsubscribeUrl
             : null;
     }
 }

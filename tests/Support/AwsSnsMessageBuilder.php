@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace Tests\Support;
 
 use Aws\Sns\Message;
@@ -25,7 +27,7 @@ final class AwsSnsMessageBuilder
      */
     public static function makeData(array $overrides = []): array
     {
-        $default_data = [
+        $defaultData = [
             'Message'          => '{"value":"default"}',
             'MessageId'        => '12345678-1234-1234-1234-123456789012',
             'Timestamp'        => '2026-01-01T00:00:00Z',
@@ -37,13 +39,13 @@ final class AwsSnsMessageBuilder
             'UnsubscribeURL'   => 'https://sns.us-east-1.amazonaws.com/unsubscribe',
         ];
 
-        $data = array_replace($default_data, $overrides);
+        $data = array_replace($defaultData, $overrides);
 
-        $type            = $data['Type'] ?? '';
-        $type            = is_string($type) ? $type : '';
-        $is_subscription = $type === 'SubscriptionConfirmation' || $type === 'UnsubscribeConfirmation';
+        $type           = $data['Type'] ?? '';
+        $type           = is_string($type) ? $type : '';
+        $isSubscription = $type === 'SubscriptionConfirmation' || $type === 'UnsubscribeConfirmation';
 
-        if ($is_subscription) {
+        if ($isSubscription) {
             $data['SubscribeURL'] ??= 'https://sns.us-east-1.amazonaws.com/subscribe';
             $data['Token']        ??= 'token-value';
         }
@@ -67,42 +69,44 @@ final class AwsSnsMessageBuilder
      *
      * @param  array<string, mixed>  $overrides
      * @return array{data: array<string, mixed>, certificate: string}
+     *
+     * @throws \Tests\Support\TestSupportException
      */
     public static function makeSignedPayload(array $overrides = []): array
     {
-        $resource_config = [
+        $resourceConfig = [
             'private_key_type' => OPENSSL_KEYTYPE_RSA,
             'private_key_bits' => 2048,
         ];
 
-        $private_key = openssl_pkey_new($resource_config);
+        $privateKey = openssl_pkey_new($resourceConfig);
 
-        if ($private_key === false) {
+        if ($privateKey === false) {
             throw new TestSupportException('Unable to generate private key.');
         }
 
-        $certificate_signing_request = openssl_csr_new([], $private_key, ['digest_alg' => 'sha256']);
+        $certificateSigningRequest = openssl_csr_new([], $privateKey, ['digest_alg' => 'sha256']);
 
-        if ($certificate_signing_request === false) {
+        if ($certificateSigningRequest === false) {
             throw new TestSupportException('Unable to generate certificate signing request.');
         }
 
-        $certificate_resource = openssl_csr_sign(
-            $certificate_signing_request,
+        $certificateResource = openssl_csr_sign(
+            $certificateSigningRequest,
             null,
-            $private_key,
+            $privateKey,
             1,
             ['digest_alg' => 'sha256'],
         );
 
-        if ($certificate_resource === false) {
+        if ($certificateResource === false) {
             throw new TestSupportException('Unable to sign certificate.');
         }
 
-        $certificate          = '';
-        $certificate_exported = openssl_x509_export($certificate_resource, $certificate);
+        $certificate         = '';
+        $certificateExported = openssl_x509_export($certificateResource, $certificate);
 
-        if ($certificate_exported === false) {
+        if ($certificateExported === false) {
             throw new TestSupportException('Unable to export certificate.');
         }
 
@@ -110,17 +114,17 @@ final class AwsSnsMessageBuilder
         $data['SignatureVersion'] = '1';
         $data['Signature']        = '';
 
-        $validator      = new MessageValidator(static fn (string $certificate_url): string => $certificate_url);
-        $string_to_sign = $validator->getStringToSign(new Message($data));
+        $validator    = new MessageValidator(static fn (string $certificateUrl): string => $certificateUrl);
+        $stringToSign = $validator->getStringToSign(new Message($data));
 
-        $raw_signature = '';
-        $signed        = openssl_sign($string_to_sign, $raw_signature, $private_key, OPENSSL_ALGO_SHA1);
+        $rawSignature = '';
+        $signed       = openssl_sign($stringToSign, $rawSignature, $privateKey, OPENSSL_ALGO_SHA1);
 
         if ($signed === false) {
             throw new TestSupportException('Unable to sign message payload.');
         }
 
-        $data['Signature'] = base64_encode($raw_signature);
+        $data['Signature'] = base64_encode($rawSignature);
 
         return [
             'data'        => $data,

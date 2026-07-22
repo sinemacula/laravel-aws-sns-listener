@@ -58,7 +58,7 @@ final class BounceTest extends TestCase
         self::assertSame('mta.example.test', $bounce->getReportingMta());
         self::assertSame(self::BOUNCE_REMOTE_MTA_IP, $bounce->getRemoteMtaIp());
 
-        $bounce_without_reporting_mta = new Bounce([
+        $bounceWithoutReportingMta = new Bounce([
             'bounceType'        => 'Permanent',
             'bounceSubType'     => 'General',
             'bouncedRecipients' => [],
@@ -67,6 +67,6 @@ final class BounceTest extends TestCase
             'remoteMtaIp'       => '127.0.0.4',
         ]);
 
-        self::assertNull($bounce_without_reporting_mta->getReportingMta());
+        self::assertNull($bounceWithoutReportingMta->getReportingMta());
     }
 }

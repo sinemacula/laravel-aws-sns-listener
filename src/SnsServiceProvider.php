@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -13,7 +15,7 @@ use SineMacula\Aws\Sns\Http\Middleware\VerifySnsSignature;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class SnsServiceProvider extends ServiceProvider
+final class SnsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.

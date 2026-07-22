@@ -53,15 +53,15 @@ final class ComplaintTest extends TestCase
         self::assertSame(self::EVENT_TIMESTAMP_ISO, $complaint->getTimestamp()->toIso8601String());
         self::assertSame('complaint-1', $complaint->getFeedbackId());
 
-        $complaint_without_optionals = new Complaint([
+        $complaintWithoutOptionals = new Complaint([
             'complainedRecipients' => [],
             'arrivalDate'          => null,
             'timestamp'            => self::EVENT_TIMESTAMP,
             'feedbackId'           => 'complaint-2',
         ]);
 
-        self::assertNull($complaint_without_optionals->getUserAgent());
-        self::assertNull($complaint_without_optionals->getFeedbackType());
-        self::assertNull($complaint_without_optionals->getArrivalDate());
+        self::assertNull($complaintWithoutOptionals->getUserAgent());
+        self::assertNull($complaintWithoutOptionals->getFeedbackType());
+        self::assertNull($complaintWithoutOptionals->getArrivalDate());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Events;
 
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface;
@@ -10,7 +12,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class S3NotificationReceived extends NotificationReceived
+final class S3NotificationReceived extends NotificationReceived
 {
     /**
      * Create a new event instance.

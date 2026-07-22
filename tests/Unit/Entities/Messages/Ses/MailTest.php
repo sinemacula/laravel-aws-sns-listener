@@ -69,7 +69,7 @@ final class MailTest extends TestCase
         self::assertSame(['X-Test' => 'yes'], $mail->getHeaders());
         self::assertSame(['subject' => 'Hello'], $mail->getCommonHeaders());
 
-        $minimal_mail = new Mail([
+        $minimalMail = new Mail([
             'messageId'        => 'mail-2',
             'timestamp'        => self::EVENT_TIMESTAMP,
             'source'           => self::SENDER_EMAIL,
@@ -80,8 +80,8 @@ final class MailTest extends TestCase
             'destination'      => [],
         ]);
 
-        self::assertFalse($minimal_mail->areHeadersTruncated());
-        self::assertNull($minimal_mail->getHeaders());
-        self::assertNull($minimal_mail->getCommonHeaders());
+        self::assertFalse($minimalMail->areHeadersTruncated());
+        self::assertNull($minimalMail->getHeaders());
+        self::assertNull($minimalMail->getCommonHeaders());
     }
 }

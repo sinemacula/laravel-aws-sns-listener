@@ -55,15 +55,15 @@ final class VerifySnsSignatureTest extends TestCase
     #[Test]
     public function itValidatesSignatureAndSetsResolvedMessageOnTheRequest(): void
     {
-        $certificate_url = 'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-valid.pem';
-        $signed_payload  = AwsSnsMessageBuilder::makeSignedPayload([
+        $certificateUrl = 'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-valid.pem';
+        $signedPayload  = AwsSnsMessageBuilder::makeSignedPayload([
             'Type'           => 'Notification',
             'Message'        => '{"value":"valid"}',
-            'SigningCertURL' => $certificate_url,
+            'SigningCertURL' => $certificateUrl,
         ]);
 
         Http::fake([
-            $certificate_url => Http::response($signed_payload['certificate'], 200),
+            $certificateUrl => Http::response($signedPayload['certificate'], 200),
         ]);
 
         $_SERVER['HTTP_X_AMZ_SNS_MESSAGE_TYPE'] = 'Notification';
@@ -73,10 +73,10 @@ final class VerifySnsSignatureTest extends TestCase
 
         try {
             $response = $this->withPhpInput(
-                json_encode($signed_payload['data'], JSON_THROW_ON_ERROR),
+                json_encode($signedPayload['data'], JSON_THROW_ON_ERROR),
                 static function () use ($middleware, $request): Response {
-                    return $middleware->handle($request, static function (Request $handled_request): Response {
-                        $message = $handled_request->attributes->get('sns_message');
+                    return $middleware->handle($request, static function (Request $handledRequest): Response {
+                        $message = $handledRequest->attributes->get('sns_message');
                         self::assertInstanceOf(MessageInterface::class, $message);
 
                         return new Response('ok', 202);
@@ -99,16 +99,16 @@ final class VerifySnsSignatureTest extends TestCase
     #[Test]
     public function itWrapsSignatureValidationErrors(): void
     {
-        $certificate_url = 'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-invalid.pem';
-        $signed_payload  = AwsSnsMessageBuilder::makeSignedPayload([
+        $certificateUrl = 'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-invalid.pem';
+        $signedPayload  = AwsSnsMessageBuilder::makeSignedPayload([
             'Type'           => 'Notification',
             'Message'        => '{"value":"invalid"}',
-            'SigningCertURL' => $certificate_url,
+            'SigningCertURL' => $certificateUrl,
         ]);
-        $signed_payload['data']['Signature'] = base64_encode('invalid-signature');
+        $signedPayload['data']['Signature'] = base64_encode('invalid-signature');
 
         Http::fake([
-            $certificate_url => Http::response($signed_payload['certificate'], 200),
+            $certificateUrl => Http::response($signedPayload['certificate'], 200),
         ]);
 
         $_SERVER['HTTP_X_AMZ_SNS_MESSAGE_TYPE'] = 'Notification';
@@ -120,7 +120,7 @@ final class VerifySnsSignatureTest extends TestCase
 
         try {
             $this->withPhpInput(
-                json_encode($signed_payload['data'], JSON_THROW_ON_ERROR),
+                json_encode($signedPayload['data'], JSON_THROW_ON_ERROR),
                 static fn () => $middleware->handle(
                     Request::create(self::SNS_ROUTE, 'POST'),
                     static fn (): Response => new Response('ok'),
@@ -139,16 +139,16 @@ final class VerifySnsSignatureTest extends TestCase
     #[Test]
     public function itThrowsWhenCertificateFetchDoesNotReturnAnHttpResponse(): void
     {
-        $certificate_url = 'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-invalid-response.pem';
-        $signed_payload  = AwsSnsMessageBuilder::makeSignedPayload([
+        $certificateUrl = 'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-invalid-response.pem';
+        $signedPayload  = AwsSnsMessageBuilder::makeSignedPayload([
             'Type'           => 'Notification',
             'Message'        => '{"value":"invalid-response"}',
-            'SigningCertURL' => $certificate_url,
+            'SigningCertURL' => $certificateUrl,
         ]);
 
         Http::shouldReceive('get')
             ->once()
-            ->with($certificate_url)
+            ->with($certificateUrl)
             ->andReturn('invalid-response');
 
         $_SERVER['HTTP_X_AMZ_SNS_MESSAGE_TYPE'] = 'Notification';
@@ -160,7 +160,7 @@ final class VerifySnsSignatureTest extends TestCase
 
         try {
             $this->withPhpInput(
-                json_encode($signed_payload['data'], JSON_THROW_ON_ERROR),
+                json_encode($signedPayload['data'], JSON_THROW_ON_ERROR),
                 static fn () => $middleware->handle(
                     Request::create(self::SNS_ROUTE, 'POST'),
                     static fn (): Response => new Response('ok'),
@@ -182,17 +182,17 @@ final class VerifySnsSignatureTest extends TestCase
      */
     private function withPhpInput(string $input, callable $callback): mixed
     {
-        $stream_class           = $this->ensurePhpInputStreamWrapper();
-        $stream_class::$content = $input;
+        $streamClass           = $this->ensurePhpInputStreamWrapper();
+        $streamClass::$content = $input;
 
         stream_wrapper_unregister('php');
-        stream_wrapper_register('php', $stream_class);
+        stream_wrapper_register('php', $streamClass);
 
         try {
             return $callback();
         } finally {
             stream_wrapper_restore('php');
-            $stream_class::$content = '';
+            $streamClass::$content = '';
         }
     }
 
@@ -203,10 +203,10 @@ final class VerifySnsSignatureTest extends TestCase
      */
     private function ensurePhpInputStreamWrapper(): string
     {
-        $class_name = __NAMESPACE__ . '\PhpInputStreamWrapper';
+        $className = __NAMESPACE__ . '\PhpInputStreamWrapper';
 
-        if (!class_exists($class_name, false)) {
-            $wrapper_class_definition = <<<'PHP'
+        if (!class_exists($className, false)) {
+            $wrapperClassDefinition = <<<'PHP'
                 namespace Tests\Integration\Http;
 
                 /**
@@ -257,9 +257,9 @@ final class VerifySnsSignatureTest extends TestCase
                 }
                 PHP;
 
-            eval($wrapper_class_definition);
+            eval($wrapperClassDefinition);
         }
 
-        return $class_name;
+        return $className;
     }
 }

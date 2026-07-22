@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages\Ses;
 
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\SesNotificationInterface;
@@ -11,7 +13,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class Notification extends BaseNotification implements SesNotificationInterface
+final class Notification extends BaseNotification implements SesNotificationInterface
 {
     /** @var \SineMacula\Aws\Sns\Entities\Messages\Ses\Delivery|null Delivery value. */
     protected ?Delivery $delivery = null;
@@ -30,6 +32,7 @@ class Notification extends BaseNotification implements SesNotificationInterface
      *
      * @return string
      */
+    #[\Override]
     public function getNotificationType(): string
     {
         return $this->attributes->Message->notificationType;
@@ -40,6 +43,7 @@ class Notification extends BaseNotification implements SesNotificationInterface
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Ses\Delivery|null
      */
+    #[\Override]
     public function getDelivery(): ?Delivery
     {
         return $this->delivery ??= $this->attributes->Message->delivery
@@ -52,6 +56,7 @@ class Notification extends BaseNotification implements SesNotificationInterface
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Ses\Bounce|null
      */
+    #[\Override]
     public function getBounce(): ?Bounce
     {
         return $this->bounce ??= $this->attributes->Message->bounce
@@ -64,6 +69,7 @@ class Notification extends BaseNotification implements SesNotificationInterface
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Ses\Complaint|null
      */
+    #[\Override]
     public function getComplaint(): ?Complaint
     {
         return $this->complaint ??= $this->attributes->Message->complaint
@@ -76,6 +82,7 @@ class Notification extends BaseNotification implements SesNotificationInterface
      *
      * @return \SineMacula\Aws\Sns\Entities\Messages\Ses\Mail
      */
+    #[\Override]
     public function getMail(): Mail
     {
         return $this->mail ??= new Mail($this->attributes->Message->mail);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages;
 
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
@@ -10,4 +12,4 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class TestNotification extends Notification implements NotificationInterface {}
+final class TestNotification extends Notification implements NotificationInterface {}

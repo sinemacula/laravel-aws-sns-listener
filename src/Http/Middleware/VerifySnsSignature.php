@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Http\Middleware;
 
 use Aws\Sns\Exception\InvalidSnsMessageException;
@@ -19,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class VerifySnsSignature
+final class VerifySnsSignature
 {
     /**
      * Handle an incoming request.
@@ -71,18 +73,20 @@ class VerifySnsSignature
      */
     private function resolveValidator(): MessageValidator
     {
-        return new MessageValidator(fn (string $certificate_url) => Cache::rememberForever($certificate_url, fn () => $this->fetchCertificateBody($certificate_url)));
+        return new MessageValidator(fn (string $certificateUrl) => Cache::rememberForever($certificateUrl, fn () => $this->fetchCertificateBody($certificateUrl)));
     }
 
     /**
      * Fetch and return the certificate body.
      *
-     * @param  string  $certificate_url
+     * @param  string  $certificateUrl
      * @return string
+     *
+     * @throws \Aws\Sns\Exception\InvalidSnsMessageException
      */
-    private function fetchCertificateBody(string $certificate_url): string
+    private function fetchCertificateBody(string $certificateUrl): string
     {
-        $response = Http::get($certificate_url);
+        $response = Http::get($certificateUrl);
 
         if (!$response instanceof HttpResponse) {
             throw new InvalidSnsMessageException('SNS certificate request did not return a valid response.');

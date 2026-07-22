@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace Tests\Unit\Entities\Messages;
 
 use Aws\Sns\Message as AwsMessage;
@@ -31,16 +33,16 @@ final class MessageTest extends TestCase
     #[Test]
     public function itReturnsMessageMetadataAndDecodedPayloadValues(): void
     {
-        $base_message = $this->makeAwsMessage([
+        $baseMessage = $this->makeAwsMessage([
             'Message'           => '{"foo":"bar"}',
             'MessageAttributes' => [
                 'priority' => ['Type' => 'String', 'Value' => 'high'],
             ],
         ]);
 
-        $message = new class ($base_message) extends Message {};
+        $message = new class ($baseMessage) extends Message {};
 
-        self::assertSame($base_message, $message->getBaseMessage());
+        self::assertSame($baseMessage, $message->getBaseMessage());
         self::assertSame('12345678-1234-1234-1234-123456789012', $message->getId());
         self::assertSame('Notification', $message->getType());
         self::assertSame('arn:aws:sns:us-east-1:123456789012:test-topic', $message->getTopic());
@@ -95,11 +97,11 @@ final class MessageTest extends TestCase
     #[Test]
     public function itNormalizesStdClassMessageAttributes(): void
     {
-        $message_attributes = (object) [
+        $messageAttributes = (object) [
             'priority' => (object) ['Type' => 'String', 'Value' => 'high'],
         ];
 
-        $message = new class ($this->makeAwsMessage(['MessageAttributes' => $message_attributes])) extends Message {};
+        $message = new class ($this->makeAwsMessage(['MessageAttributes' => $messageAttributes])) extends Message {};
 
         $attributes = $message->getAttributes();
 

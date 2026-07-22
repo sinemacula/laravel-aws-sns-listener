@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace SineMacula\Aws\Sns\Entities\Messages\Ses;
 
 use Carbon\Carbon;
@@ -11,7 +15,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class Mail extends Entity
+final class Mail extends Entity
 {
     /**
      * Return the message identifier.

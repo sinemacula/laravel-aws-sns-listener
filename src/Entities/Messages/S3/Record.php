@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages\S3;
 
 use Carbon\Carbon;
@@ -11,7 +13,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class Record extends Entity
+final class Record extends Entity
 {
     /** @var \SineMacula\Aws\Sns\Entities\Messages\S3\Bucket|null Bucket value. */
     protected ?Bucket $bucket = null;

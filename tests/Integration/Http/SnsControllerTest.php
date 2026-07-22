@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Tests\Integration\Http;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -111,9 +112,9 @@ final class SnsControllerTest extends TestCase
         Event::fake();
         Http::fake();
 
-        $topic_manager = $this->appInstance()->make('sns-topic-manager');
-        self::assertInstanceOf(TopicManager::class, $topic_manager);
-        $topic_manager->register('arn:aws:sns:us-east-1:123456789012:known');
+        $topicManager = $this->appInstance()->make('sns-topic-manager');
+        self::assertInstanceOf(TopicManager::class, $topicManager);
+        $topicManager->register('arn:aws:sns:us-east-1:123456789012:known');
 
         $message = $this->createMock(SubscriptionConfirmationInterface::class);
         $message->method('getTopic')->willReturn('arn:aws:sns:us-east-1:123456789012:known');
@@ -233,7 +234,7 @@ final class SnsControllerTest extends TestCase
      * @param  \SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface  $message
      * @return \Illuminate\Http\JsonResponse
      */
-    private function dispatchWithMessage(MessageInterface $message): \Illuminate\Http\JsonResponse
+    private function dispatchWithMessage(MessageInterface $message): JsonResponse
     {
         $request = Request::create('/hooks/sns', 'POST');
         $request->attributes->set('sns_message', $message);

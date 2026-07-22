@@ -33,7 +33,7 @@ final class SnsServiceProviderTest extends TestCase
     #[Test]
     public function itReturnsEarlyWhenConfigPathFunctionIsNotAvailable(): void
     {
-        $function_override = <<<'PHP'
+        $functionOverride = <<<'PHP'
             namespace SineMacula\Aws\Sns;
 
             function function_exists(string $function): bool
@@ -47,17 +47,19 @@ final class SnsServiceProviderTest extends TestCase
             PHP;
 
         if (!\function_exists('SineMacula\Aws\Sns\function_exists')) {
-            eval($function_override);
+            eval($functionOverride);
         }
 
-        $provider_class = '\SineMacula\Aws\Sns\SnsServiceProvider';
-        unset(IlluminateServiceProvider::$publishes[$provider_class]);
+        $providerClass = '\SineMacula\Aws\Sns\SnsServiceProvider';
+        unset(IlluminateServiceProvider::$publishes[$providerClass]);
 
         $app = new class {
             /**
              * Determines if the application is running in console mode.
              *
              * @return bool
+             *
+             * @imperative
              */
             public function runningInConsole(): bool
             {
@@ -68,12 +70,12 @@ final class SnsServiceProviderTest extends TestCase
         try {
             $GLOBALS['__sns_force_missing_config_path'] = true;
 
-            $provider = new $provider_class($app);
+            $provider = new $providerClass($app);
             $provider->boot();
         } finally {
             $GLOBALS['__sns_force_missing_config_path'] = false;
         }
 
-        self::assertArrayNotHasKey($provider_class, IlluminateServiceProvider::$publishes);
+        self::assertArrayNotHasKey($providerClass, IlluminateServiceProvider::$publishes);
     }
 }
