@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns;
 
 /**
@@ -10,7 +12,7 @@ namespace SineMacula\Aws\Sns;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class TopicManager
+final class TopicManager
 {
     /**
      * Create a new topic manager.
@@ -20,8 +22,7 @@ class TopicManager
     public function __construct(
 
         /** @var array<int, string> The SNS topics. */
-        protected array $topics = [],
-
+        private array $topics = [],
     ) {}
 
     /**

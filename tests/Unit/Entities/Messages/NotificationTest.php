@@ -33,8 +33,8 @@ final class NotificationTest extends TestCase
 
         self::assertSame('https://example.test/unsubscribe', $notification->getUnsubscribeUrl());
 
-        $invalid_notification = new class (AwsSnsMessageBuilder::makeMessage(['UnsubscribeURL' => ['invalid']])) extends Notification {};
+        $invalidNotification = new class (AwsSnsMessageBuilder::makeMessage(['UnsubscribeURL' => ['invalid']])) extends Notification {};
 
-        self::assertNull($invalid_notification->getUnsubscribeUrl());
+        self::assertNull($invalidNotification->getUnsubscribeUrl());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages\S3;
 
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\S3NotificationInterface;
@@ -11,7 +13,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Notification as BaseNotification;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class Notification extends BaseNotification implements S3NotificationInterface
+final class Notification extends BaseNotification implements S3NotificationInterface
 {
     /** @var array<int, \SineMacula\Aws\Sns\Entities\Messages\S3\Record>|null Mapped S3 records cache. */
     protected ?array $records = null;
@@ -21,6 +23,7 @@ class Notification extends BaseNotification implements S3NotificationInterface
      *
      * @return array<int, \SineMacula\Aws\Sns\Entities\Messages\S3\Record>
      */
+    #[\Override]
     public function getRecords(): array
     {
         $records = $this->getMessage()->Records ?? [];

@@ -45,11 +45,11 @@ final class S3ObjectTest extends TestCase
         self::assertSame('v1', $object->getVersionId());
         self::assertSame('001', $object->getSequencer());
 
-        $object_without_optionals = new S3Object(['key' => self::REPORT_FILE_KEY]);
+        $objectWithoutOptionals = new S3Object(['key' => self::REPORT_FILE_KEY]);
 
-        self::assertNull($object_without_optionals->getSize());
-        self::assertNull($object_without_optionals->getETag());
-        self::assertNull($object_without_optionals->getVersionId());
-        self::assertNull($object_without_optionals->getSequencer());
+        self::assertNull($objectWithoutOptionals->getSize());
+        self::assertNull($objectWithoutOptionals->getETag());
+        self::assertNull($objectWithoutOptionals->getVersionId());
+        self::assertNull($objectWithoutOptionals->getSequencer());
     }
 }

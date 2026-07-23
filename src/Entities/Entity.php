@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace SineMacula\Aws\Sns\Entities;
 
 /**
@@ -74,13 +78,13 @@ abstract class Entity
      */
     public function toArray(): array
     {
-        $encoded_attributes = json_encode($this->attributes);
-        $decoded_attributes = is_string($encoded_attributes)
-            ? json_decode($encoded_attributes, true)
+        $encodedAttributes = json_encode($this->attributes);
+        $decodedAttributes = is_string($encodedAttributes)
+            ? json_decode($encodedAttributes, true)
             : null;
 
-        return is_array($decoded_attributes)
-            ? $decoded_attributes
+        return is_array($decodedAttributes)
+            ? $decodedAttributes
             : [];
     }
 }

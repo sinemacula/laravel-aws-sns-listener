@@ -38,11 +38,11 @@ final class SNSNotificationTest extends TestCase
 
         self::assertSame(self::READY_EVENT_PAYLOAD, $notification->getRawMessage());
 
-        $base_message            = AwsSnsMessageBuilder::makeMessage(['Message' => self::READY_EVENT_PAYLOAD]);
-        $base_message['Message'] = ['not', 'a', 'string'];
+        $baseMessage            = AwsSnsMessageBuilder::makeMessage(['Message' => self::READY_EVENT_PAYLOAD]);
+        $baseMessage['Message'] = ['not', 'a', 'string'];
 
-        $invalid_notification = new SNSNotification($base_message);
+        $invalidNotification = new SNSNotification($baseMessage);
 
-        self::assertSame('', $invalid_notification->getRawMessage());
+        self::assertSame('', $invalidNotification->getRawMessage());
     }
 }

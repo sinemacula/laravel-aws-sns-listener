@@ -7,3 +7,4 @@
 .php-cs-fixer.cache
 .DS_Store
 clover.xml
+composer.lock

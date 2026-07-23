@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace SineMacula\Aws\Sns;
 
 use Aws\Sns\Message;
@@ -20,19 +24,21 @@ use SineMacula\Aws\Sns\Exceptions\UnsupportedMessageException;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class MessageFactory
+final class MessageFactory
 {
     /**
      * Create a native SNS message instance.
      *
      * @param  \Aws\Sns\Message  $message
      * @return \SineMacula\Aws\Sns\Entities\Messages\Contracts\MessageInterface
+     *
+     * @throws \SineMacula\Aws\Sns\Exceptions\UnsupportedMessageException
      */
     public static function make(Message $message): MessageInterface
     {
-        $message_type = $message['Type'] ?? null;
-        $message_type = is_string($message_type)
-            ? $message_type
+        $messageType = $message['Type'] ?? null;
+        $messageType = is_string($messageType)
+            ? $messageType
             : 'Undefined';
 
         return match (true) {
@@ -42,7 +48,7 @@ class MessageFactory
             self::isCloudWatchNotification($message)   => new CloudWatchNotification($message),
             self::isTestNotification($message)         => new TestNotification($message),
             self::isGenericNotification($message)      => new SNSNotification($message),
-            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . $message_type),
+            default                                    => throw new UnsupportedMessageException('Unsupported SNS message type: ' . $messageType),
         };
     }
 

@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\SesNotificationInterface;
+use SineMacula\Aws\Sns\Events\NotificationReceived;
 use SineMacula\Aws\Sns\Events\SesNotificationReceived;
 use Tests\TestCase;
 
@@ -44,24 +45,16 @@ final class SesNotificationReceivedTest extends TestCase
      * Throws for invalid SES notification type.
      *
      * @return void
+     *
+     * @SuppressWarnings("php:S3011")
      */
     #[Test]
     public function itThrowsForInvalidSesNotificationType(): void
     {
-        $event = new class (self::createStub(SesNotificationInterface::class)) extends SesNotificationReceived {
-            /**
-             * Overwrite notification with a generic type.
-             *
-             * @param  \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface  $notification
-             * @return void
-             */
-            public function forceNotification(NotificationInterface $notification): void
-            {
-                $this->notification = $notification;
-            }
-        };
+        $event = new SesNotificationReceived(self::createStub(SesNotificationInterface::class));
 
-        $event->forceNotification(self::createStub(NotificationInterface::class));
+        $property = new \ReflectionProperty(NotificationReceived::class, 'notification');
+        $property->setValue($event, self::createStub(NotificationInterface::class));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(self::INVALID_NOTIFICATION_TYPE_MESSAGE);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages\S3;
 
 use SineMacula\Aws\Sns\Entities\Entity;
@@ -10,7 +12,7 @@ use SineMacula\Aws\Sns\Entities\Entity;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class S3Object extends Entity
+final class S3Object extends Entity
 {
     /**
      * Return the key.

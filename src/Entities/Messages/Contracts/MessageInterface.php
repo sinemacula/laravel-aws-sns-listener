@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace SineMacula\Aws\Sns\Entities\Messages\Contracts;
 
 use Aws\Sns\Message as BaseMessage;

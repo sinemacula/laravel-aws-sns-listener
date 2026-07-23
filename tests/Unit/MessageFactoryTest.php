@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint -- arbitrary SNS payload data
+
 namespace Tests\Unit;
 
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -105,6 +107,24 @@ final class MessageFactoryTest extends TestCase
     }
 
     /**
+     * Maps SNS messages to expected entity implementations.
+     *
+     * @param  array<string, mixed>  $messageData
+     * @param  class-string  $expectedClass
+     * @return void
+     */
+    #[DataProvider('messageProvider')]
+    #[Test]
+    public function itMapsSnsMessagesToTheExpectedEntities(array $messageData, string $expectedClass): void
+    {
+        $message = AwsSnsMessageBuilder::makeMessage($messageData);
+
+        $entity = MessageFactory::make($message);
+
+        self::assertInstanceOf($expectedClass, $entity);
+    }
+
+    /**
      * @return iterable<string, array{0: array<string, mixed>, 1: string}>
      */
     public static function unsupportedMessageProvider(): iterable
@@ -119,38 +139,20 @@ final class MessageFactoryTest extends TestCase
     }
 
     /**
-     * Maps SNS messages to expected entity implementations.
-     *
-     * @param  array<string, mixed>  $message_data
-     * @param  class-string  $expected_class
-     * @return void
-     */
-    #[DataProvider('messageProvider')]
-    #[Test]
-    public function itMapsSnsMessagesToTheExpectedEntities(array $message_data, string $expected_class): void
-    {
-        $message = AwsSnsMessageBuilder::makeMessage($message_data);
-
-        $entity = MessageFactory::make($message);
-
-        self::assertInstanceOf($expected_class, $entity);
-    }
-
-    /**
      * It throws for unsupported message types.
      *
-     * @param  array<string, mixed>  $message_data
-     * @param  string  $expected_message
+     * @param  array<string, mixed>  $messageData
+     * @param  string  $expectedMessage
      * @return void
      */
     #[DataProvider('unsupportedMessageProvider')]
     #[Test]
-    public function itThrowsForUnsupportedMessageTypes(array $message_data, string $expected_message): void
+    public function itThrowsForUnsupportedMessageTypes(array $messageData, string $expectedMessage): void
     {
-        $message = AwsSnsMessageBuilder::makeMessage($message_data);
+        $message = AwsSnsMessageBuilder::makeMessage($messageData);
 
         $this->expectException(UnsupportedMessageException::class);
-        $this->expectExceptionMessage($expected_message);
+        $this->expectExceptionMessage($expectedMessage);
 
         MessageFactory::make($message);
     }

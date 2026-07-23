@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Events;
 
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\SesNotificationInterface;
@@ -10,7 +12,7 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\SesNotificationInterface;
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
  */
-class SesNotificationReceived extends NotificationReceived
+final class SesNotificationReceived extends NotificationReceived
 {
     /**
      * Create a new event instance.

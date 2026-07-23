@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Entities\Messages\Contracts;
 
 use SineMacula\Aws\Sns\Entities\Messages\Ses\Bounce;

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Tests\Integration;
 
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -49,14 +50,14 @@ final class SnsServiceProviderTest extends TestCase
         config()->set('aws.sns.topics', ['topic-a', 'topic-b']);
         config()->set('aws.sns.route', '/hooks/register-' . uniqid());
 
-        $route_count_before = count($this->appInstance()['router']->getRoutes()->getRoutes());
+        $routeCountBefore = count($this->appInstance()['router']->getRoutes()->getRoutes());
 
         $provider = new SnsServiceProvider($this->appInstance());
         $provider->register();
 
-        $route_count_after = count($this->appInstance()['router']->getRoutes()->getRoutes());
+        $routeCountAfter = count($this->appInstance()['router']->getRoutes()->getRoutes());
 
-        self::assertGreaterThan($route_count_before, $route_count_after);
+        self::assertGreaterThan($routeCountBefore, $routeCountAfter);
         self::assertInstanceOf(TopicManager::class, $this->appInstance()->make('sns-topic-manager'));
     }
 
@@ -88,26 +89,26 @@ final class SnsServiceProviderTest extends TestCase
     #[Test]
     public function itRegistersWebhookRouteWhenConfigured(): void
     {
-        $route_path = '/hooks/custom-' . uniqid();
-        config()->set('aws.sns.route', $route_path);
+        $routePath = '/hooks/custom-' . uniqid();
+        config()->set('aws.sns.route', $routePath);
 
         $provider = new SnsServiceProvider($this->appInstance());
 
-        $route_count_before = count($this->appInstance()['router']->getRoutes()->getRoutes());
+        $routeCountBefore = count($this->appInstance()['router']->getRoutes()->getRoutes());
 
         $provider->register();
 
-        $routes            = $this->appInstance()['router']->getRoutes()->getRoutes();
-        $route_count_after = count($routes);
-        $matching_routes   = array_values(array_filter(
+        $routes          = $this->appInstance()['router']->getRoutes()->getRoutes();
+        $routeCountAfter = count($routes);
+        $matchingRoutes  = array_values(array_filter(
             $routes,
-            static fn (\Illuminate\Routing\Route $route): bool => $route->uri() === ltrim($route_path, '/'),
+            static fn (Route $route): bool => $route->uri() === ltrim($routePath, '/'),
         ));
 
-        self::assertSame($route_count_before + 1, $route_count_after);
-        self::assertCount(1, $matching_routes);
-        self::assertContains('POST', $matching_routes[0]->methods());
-        self::assertContains(VerifySnsSignature::class, $matching_routes[0]->gatherMiddleware());
+        self::assertSame($routeCountBefore + 1, $routeCountAfter);
+        self::assertCount(1, $matchingRoutes);
+        self::assertContains('POST', $matchingRoutes[0]->methods());
+        self::assertContains(VerifySnsSignature::class, $matchingRoutes[0]->gatherMiddleware());
     }
 
     /**
@@ -122,13 +123,13 @@ final class SnsServiceProviderTest extends TestCase
 
         $provider = new SnsServiceProvider($this->appInstance());
 
-        $route_count_before = count($this->appInstance()['router']->getRoutes()->getRoutes());
+        $routeCountBefore = count($this->appInstance()['router']->getRoutes()->getRoutes());
 
         $provider->register();
 
-        $route_count_after = count($this->appInstance()['router']->getRoutes()->getRoutes());
+        $routeCountAfter = count($this->appInstance()['router']->getRoutes()->getRoutes());
 
-        self::assertSame($route_count_before, $route_count_after);
+        self::assertSame($routeCountBefore, $routeCountAfter);
     }
 
     /**
@@ -139,7 +140,7 @@ final class SnsServiceProviderTest extends TestCase
     #[Test]
     public function itPublishesConfigWhenRunningInConsole(): void
     {
-        $original_publishes = IlluminateServiceProvider::$publishes;
+        $originalPublishes = IlluminateServiceProvider::$publishes;
 
         try {
             unset(IlluminateServiceProvider::$publishes[SnsServiceProvider::class]);
@@ -149,7 +150,7 @@ final class SnsServiceProviderTest extends TestCase
 
             self::assertArrayHasKey(SnsServiceProvider::class, IlluminateServiceProvider::$publishes);
         } finally {
-            IlluminateServiceProvider::$publishes = $original_publishes;
+            IlluminateServiceProvider::$publishes = $originalPublishes;
         }
     }
 
@@ -161,7 +162,7 @@ final class SnsServiceProviderTest extends TestCase
     #[Test]
     public function itReturnsEarlyWhenNotRunningInConsole(): void
     {
-        $original_publishes = IlluminateServiceProvider::$publishes;
+        $originalPublishes = IlluminateServiceProvider::$publishes;
 
         try {
             unset(IlluminateServiceProvider::$publishes[SnsServiceProvider::class]);
@@ -171,6 +172,8 @@ final class SnsServiceProviderTest extends TestCase
                  * Determines if app is running in console mode.
                  *
                  * @return bool
+                 *
+                 * @imperative
                  */
                 public function runningInConsole(): bool
                 {
@@ -183,7 +186,7 @@ final class SnsServiceProviderTest extends TestCase
 
             self::assertArrayNotHasKey(SnsServiceProvider::class, IlluminateServiceProvider::$publishes);
         } finally {
-            IlluminateServiceProvider::$publishes = $original_publishes;
+            IlluminateServiceProvider::$publishes = $originalPublishes;
         }
     }
 }

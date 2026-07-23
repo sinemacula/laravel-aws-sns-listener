@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Facades;
 
 use Illuminate\Support\Facades\Facade;
@@ -14,13 +16,14 @@ use Illuminate\Support\Facades\Facade;
  * @method static array<int, string> getTopics()
  * @method static bool isTopicRegistered(string $topic)
  */
-class SnsTopicManager extends Facade
+final class SnsTopicManager extends Facade
 {
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
+    #[\Override]
     protected static function getFacadeAccessor(): string
     {
         return 'sns-topic-manager';

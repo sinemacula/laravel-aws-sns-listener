@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace SineMacula\Aws\Sns\Events;
 
 use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
@@ -9,6 +11,8 @@ use SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface;
  *
  * @author      Ben Carey <bdmc@sinemacula.co.uk>
  * @copyright   2026 Sine Macula Limited.
+ *
+ * @inheritable
  */
 class NotificationReceived
 {
@@ -21,7 +25,6 @@ class NotificationReceived
 
         /** @var \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface The SNS message. */
         protected NotificationInterface $notification,
-
     ) {}
 
     /**
@@ -39,14 +42,14 @@ class NotificationReceived
      *
      * @template TNotification of \SineMacula\Aws\Sns\Entities\Messages\Contracts\NotificationInterface
      *
-     * @param  class-string<TNotification>  $expected_notification
+     * @param  class-string<TNotification>  $expectedNotification
      * @return TNotification
      *
      * @throws \InvalidArgumentException
      */
-    protected function getValidatedNotification(string $expected_notification): NotificationInterface
+    protected function getValidatedNotification(string $expectedNotification): NotificationInterface
     {
-        if (!$this->notification instanceof $expected_notification) {
+        if (!$this->notification instanceof $expectedNotification) {
             throw new \InvalidArgumentException('Invalid notification type');
         }
 
