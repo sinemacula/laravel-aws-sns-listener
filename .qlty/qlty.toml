@@ -67,7 +67,7 @@ default = true
 [[source]]
 name = "sinemacula"
 repository = "https://github.com/sinemacula/coding-standards"
-tag = "v1.21.0"
+tag = "v1.23.2"
 
 [[plugin]]
 name = "actionlint"
@@ -84,7 +84,7 @@ name = "osv-scanner"
 
 [[plugin]]
 name = "php-codesniffer"
-version = "4.0.1"
+version = "4.0.4"
 mode = "comment"
 package_file = "composer.json"
 package_filters = ["slevomat", "dealerdirect", "sinemacula"]
@@ -97,15 +97,25 @@ package_filters = ["slevomat", "dealerdirect", "sinemacula"]
 [plugins.definitions.php-codesniffer.drivers.lint]
 success_codes = [0, 1, 2, 3]
 
-# Pinned to the last php-cs-fixer release whose symfony/console stays on the 7.x
-# line. 3.90+ pulls symfony/console 8 (requires PHP 8.4.1 and uses 8.4-only
-# syntax), which qlty's PHP 8.3 runner cannot parse. Bump once the runner ships
-# PHP 8.4.
+# php-cs-fixer 3.90+ accepts symfony 8, which needs PHP 8.4.1 and cannot be
+# parsed by the PHP 8.3 runner. The sandbox install ignores platform
+# requirements, so symfony is held on the 7.x line here. extra_packages is used
+# rather than package_file because qlty ignores extra_packages when
+# package_file is set on the same plugin.
 [[plugin]]
 name = "php-cs-fixer"
-package_file = "composer.json"
-package_filters = ["sinemacula"]
-version = "3.89.0"
+version = "3.95.25"
+extra_packages = [
+    "sinemacula/coding-standards@1.23.2",
+    "symfony/console@^7.4",
+    "symfony/event-dispatcher@^7.4",
+    "symfony/filesystem@^7.4",
+    "symfony/finder@^7.4",
+    "symfony/options-resolver@^7.4",
+    "symfony/process@^7.4",
+    "symfony/stopwatch@^7.4",
+    "symfony/string@^7.4",
+]
 
 [[plugin]]
 name = "radarlint-php"
