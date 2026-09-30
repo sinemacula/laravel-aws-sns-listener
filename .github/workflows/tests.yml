@@ -45,7 +45,7 @@ jobs:
                     persist-credentials: false
 
             -   name: Setup PHP
-                uses: sinemacula/.github/.github/actions/setup-php@v1.1.1
+                uses: sinemacula/.github/.github/actions/setup-php@v1.9.1
                 with:
                     php-version: ${{ matrix.php }}
                     extensions: dom
@@ -55,7 +55,7 @@ jobs:
 
             -   name: Publish code coverage
                 if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.php == '8.3' }}
-                uses: qltysh/qlty-action/coverage@v2
+                uses: qltysh/qlty-action/coverage@c9b09987143d1e4ac955f4803c7bea742102feb5 # v2
                 with:
                     token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
                     files: clover.xml
@@ -83,7 +83,7 @@ jobs:
                     persist-credentials: false
 
             -   name: Setup PHP
-                uses: sinemacula/.github/.github/actions/setup-php@v1.1.1
+                uses: sinemacula/.github/.github/actions/setup-php@v1.9.1
                 with:
                     php-version: 8.3
                     extensions: dom
