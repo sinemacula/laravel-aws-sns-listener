@@ -1,10 +1,14 @@
-# Laravel AWS SNS Listener
+<h1 align="center">Laravel AWS SNS Listener</h1>
+
+<div align="center">
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/sinemacula/laravel-aws-sns-listener.svg)](https://packagist.org/packages/sinemacula/laravel-aws-sns-listener)
 [![Build Status](https://github.com/sinemacula/laravel-aws-sns-listener/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/sinemacula/laravel-aws-sns-listener/actions/workflows/tests.yml)
 [![Maintainability](https://qlty.sh/gh/sinemacula/projects/laravel-aws-sns-listener/maintainability.svg)](https://qlty.sh/gh/sinemacula/projects/laravel-aws-sns-listener)
 [![Code Coverage](https://qlty.sh/gh/sinemacula/projects/laravel-aws-sns-listener/coverage.svg)](https://qlty.sh/gh/sinemacula/projects/laravel-aws-sns-listener)
 [![Total Downloads](https://img.shields.io/packagist/dt/sinemacula/laravel-aws-sns-listener.svg)](https://packagist.org/packages/sinemacula/laravel-aws-sns-listener)
+
+</div>
 
 Laravel integration package for receiving AWS SNS webhooks with signature validation, typed payload mapping, and Laravel
 event dispatch.
